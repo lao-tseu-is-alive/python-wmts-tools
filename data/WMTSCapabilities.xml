@@ -1,0 +1,2473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Capabilities version="1.0.0"
+    xmlns="http://www.opengis.net/wmts/1.0"
+    xmlns:ows="http://www.opengis.net/ows/1.1"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:gml="http://www.opengis.net/gml"
+    xsi:schemaLocation="http://schemas.opengis.net/wmts/1.0/wmtsGetCapabilities_response.xsd">
+  <ows:ServiceIdentification>
+    <ows:Title>WMTS Lausanne</ows:Title>
+    <ows:Abstract>WMTS de la ville de Lausanne</ows:Abstract>
+    <ows:Keywords>
+        <ows:Keyword>Lausanne</ows:Keyword>
+        <ows:Keyword>WMTS</ows:Keyword>
+    </ows:Keywords>
+    <ows:ServiceType>OGC WMTS</ows:ServiceType>
+    <ows:ServiceTypeVersion>1.0.0</ows:ServiceTypeVersion>
+    <ows:Fees>None</ows:Fees>
+    <ows:AccessConstraint>None</ows:AccessConstraint>
+  </ows:ServiceIdentification>
+  <ows:ServiceProvider>
+    <ows:ProviderName>Ville de Lausanne</ows:ProviderName>
+    <ows:ProviderSite>https://lausanne.ch</ows:ProviderSite>
+    <ows:ServiceContact>
+      <ows:IndividualName>The contact name</ows:IndividualName>
+      <ows:PositionName>The position name</ows:PositionName>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>+41 11 222 33 44</ows:Voice>
+          <ows:Facsimile>+41 11 222 33 44</ows:Facsimile>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>Address delivery</ows:DeliveryPoint>
+          <ows:City>Berne</ows:City>
+          <ows:AdministrativeArea>BE</ows:AdministrativeArea>
+          <ows:PostalCode>3000</ows:PostalCode>
+          <ows:Country>Switzerland</ows:Country>
+          <ows:ElectronicMailAddress>info@example.com</ows:ElectronicMailAddress>
+        </ows:Address>
+      </ows:ContactInfo>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="https://cartotest.lausanne.ch/tiles/1.0.0/WMTSCapabilities.xml">
+            <ows:Constraint name="GetEncoding">
+              <ows:AllowedValues>
+                <ows:Value>REST</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+          <ows:Get xlink:href="https://cartotest.lausanne.ch/tiles/">
+            <ows:Constraint name="GetEncoding">
+              <ows:AllowedValues>
+                <ows:Value>KVP</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="GetTile">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="https://cartotest.lausanne.ch/tiles/">
+            <ows:Constraint name="GetEncoding">
+              <ows:AllowedValues>
+                <ows:Value>REST</ows:Value>
+                <ows:Value>KVP</ows:Value>
+              </ows:AllowedValues>
+            </ows:Constraint>
+          </ows:Get>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+  </ows:OperationsMetadata>
+  <!-- <ServiceMetadataURL xlink:href="" /> -->
+  <Contents>
+    
+    <Layer>
+      <ows:Title>Ombrage MNS 2019</ows:Title>
+      <ows:Identifier>altimetrie_ombrage_mns</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/altimetrie_ombrage_mns/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Ombrage MNT 2019</ows:Title>
+      <ows:Identifier>altimetrie_ombrage_mnt</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/altimetrie_ombrage_mnt/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orientation du terrain</ows:Title>
+      <ows:Identifier>altimetrie_orientation_terrain_class</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/altimetrie_orientation_terrain_class/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Pente du terrain</ows:Title>
+      <ows:Identifier>altimetrie_pente_terrain</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/altimetrie_pente_terrain/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Pente du terrain (%)</ows:Title>
+      <ows:Identifier>altimetrie_pente_terrain_class</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/altimetrie_pente_terrain_class/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Rayonnement solaire</ows:Title>
+      <ows:Identifier>energie_ombrage_mns_rayonnement</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/energie_ombrage_mns_rayonnement/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Carte nationale</ows:Title>
+      <ows:Identifier>fonds_geo_carte_nationale_msgroup</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2014</Default>
+        <Value>2014</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_carte_nationale_msgroup/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05_zoom0_6</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Conduites</ows:Title>
+      <ows:Identifier>fonds_geo_conduites</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_conduites/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>fonds_geo_conduitesA</ows:Title>
+      <ows:Identifier>fonds_geo_conduitesA</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_conduitesA/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>fonds_geo_conduitesB</ows:Title>
+      <ows:Identifier>fonds_geo_conduitesB</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_conduitesB/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Plan ville (pastel)</ows:Title>
+      <ows:Identifier>fonds_geo_devcom</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_devcom/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>fonds_geo_devcomA</ows:Title>
+      <ows:Identifier>fonds_geo_devcomA</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_devcomA/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>fonds_geo_devcomB</ows:Title>
+      <ows:Identifier>fonds_geo_devcomB</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_devcomB/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Plan ville</ows:Title>
+      <ows:Identifier>fonds_geo_osm_bdcad_couleur</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_osm_bdcad_couleur/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>fonds_geo_osm_bdcad_couleurA</ows:Title>
+      <ows:Identifier>fonds_geo_osm_bdcad_couleurA</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_osm_bdcad_couleurA/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>fonds_geo_osm_bdcad_couleurB</ows:Title>
+      <ows:Identifier>fonds_geo_osm_bdcad_couleurB</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_osm_bdcad_couleurB/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Plan ville (sombre)</ows:Title>
+      <ows:Identifier>fonds_geo_osm_bdcad_dark</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_osm_bdcad_dark/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>fonds_geo_osm_bdcad_darkA</ows:Title>
+      <ows:Identifier>fonds_geo_osm_bdcad_darkA</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_osm_bdcad_darkA/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>fonds_geo_osm_bdcad_darkB</ows:Title>
+      <ows:Identifier>fonds_geo_osm_bdcad_darkB</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_osm_bdcad_darkB/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Plan cadastral</ows:Title>
+      <ows:Identifier>fonds_geo_osm_bdcad_gris</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_osm_bdcad_gris/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>fonds_geo_osm_bdcad_grisA</ows:Title>
+      <ows:Identifier>fonds_geo_osm_bdcad_grisA</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_osm_bdcad_grisA/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>fonds_geo_osm_bdcad_grisB</ows:Title>
+      <ows:Identifier>fonds_geo_osm_bdcad_grisB</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/fonds_geo_osm_bdcad_grisB/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_couleur</ows:Title>
+      <ows:Identifier>lidargrid0_9_couleur</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_couleur/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_couleurA</ows:Title>
+      <ows:Identifier>lidargrid0_9_couleurA</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_couleurA/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_couleurB</ows:Title>
+      <ows:Identifier>lidargrid0_9_couleurB</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_couleurB/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_dark</ows:Title>
+      <ows:Identifier>lidargrid0_9_dark</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_dark/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_darkA</ows:Title>
+      <ows:Identifier>lidargrid0_9_darkA</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_darkA/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_darkB</ows:Title>
+      <ows:Identifier>lidargrid0_9_darkB</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_darkB/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_devcom</ows:Title>
+      <ows:Identifier>lidargrid0_9_devcom</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_devcom/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_devcomA</ows:Title>
+      <ows:Identifier>lidargrid0_9_devcomA</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_devcomA/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_devcomB</ows:Title>
+      <ows:Identifier>lidargrid0_9_devcomB</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_devcomB/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_gris</ows:Title>
+      <ows:Identifier>lidargrid0_9_gris</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_gris/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_grisA</ows:Title>
+      <ows:Identifier>lidargrid0_9_grisA</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_grisA/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>lidargrid0_9_grisB</ows:Title>
+      <ows:Identifier>lidargrid0_9_grisB</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/lidargrid0_9_grisB/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Lausanne 2001</ows:Title>
+      <ows:Identifier>orthophotos_ortho_lausanne_2001</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2001</Default>
+        <Value>2001</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_lausanne_2001/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05_zoom0_8</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Lausanne 2008</ows:Title>
+      <ows:Identifier>orthophotos_ortho_lausanne_2008</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2008</Default>
+        <Value>2008</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_lausanne_2008/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05_zoom0_8</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Lausanne 2012</ows:Title>
+      <ows:Identifier>orthophotos_ortho_lidar_2012</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2012</Default>
+        <Value>2012</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_lidar_2012/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05_zoom0_8</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Lausanne 2016</ows:Title>
+      <ows:Identifier>orthophotos_ortho_lidar_2016</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2016</Default>
+        <Value>2016</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_lidar_2016/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05_zoom0_8</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Lausanne 2024</ows:Title>
+      <ows:Identifier>orthophotos_ortho_lidar_2024</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2024</Default>
+        <Value>2024</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://my-tiles-mn95.lausanne.ch/tiles/1.0.0/orthophotos_ortho_lidar_2024/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+
+    <Layer>
+      <ows:Title>Deux photos Lausanne 2024</ows:Title>
+      <ows:Identifier>twophotos_ortho_lidar_2024</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2024</Default>
+        <Value>2024</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://my-tiles-mn95.lausanne.ch/tiles/1.0.0/my_tiles/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+
+    
+    <Layer>
+      <ows:Title>Orthophoto Av. d'Echallens Mai 2022</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_av_echallens_2022_05_11</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2022</Default>
+        <Value>2022</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_av_echallens_2022_05_11/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Centre-ville Mai 2020</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_centreville_2020_05_14</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2020</Default>
+        <Value>2020</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_centreville_2020_05_14/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Chailly Février 2019</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_chailly_2019_02_28</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_chailly_2019_02_28/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Croisettes Mai 2017</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_croisettes_2017_05_16</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2017</Default>
+        <Value>2017</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_croisettes_2017_05_16/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Croisettes Août 2020</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_croisettes_2020_08_21</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2020</Default>
+        <Value>2020</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_croisettes_2020_08_21/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Fiches Nord Mai 2015</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_fiches_2015_05_29</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2015</Default>
+        <Value>2015</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_fiches_2015_05_29/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Fiches Nord Juin 2016</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_fiches_2016_06_06</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2016</Default>
+        <Value>2016</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_fiches_2016_06_06/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Fiches Nord Octobre 2016</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_fiches_2016_10_21</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2016</Default>
+        <Value>2016</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_fiches_2016_10_21/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Fiches Nord Juin 2018</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_fiches_2018_06_27</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2018</Default>
+        <Value>2018</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_fiches_2018_06_27/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Fiches Nord Août 2020</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_fiches_2020_08_18</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2020</Default>
+        <Value>2020</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_fiches_2020_08_18/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Fleurettes Juin 2016</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_fleurettes_2016_06_07</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2016</Default>
+        <Value>2016</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_fleurettes_2016_06_07/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Gare Lausanne Février 2020</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_gare_lausanne_2020_02_27</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2020</Default>
+        <Value>2020</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_gare_lausanne_2020_02_27/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Sous-gare Juillet 2016</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_garesud_2016_07_15</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2016</Default>
+        <Value>2016</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_garesud_2016_07_15/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Lac de Bret Avril 2018</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_lac_de_bret_2018_04_12</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2018</Default>
+        <Value>2018</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_lac_de_bret_2018_04_12/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Malley Août 2020</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_malley_2020_08_21</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2020</Default>
+        <Value>2020</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_malley_2020_08_21/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Malley Décembre 2021</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_malley_2021_12_09</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_malley_2021_12_09/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Plaines-du-Loup Octobre 2017</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_plaine_du_loup_2017_10_07</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2017</Default>
+        <Value>2017</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_plaine_du_loup_2017_10_07/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Plaines-du-Loup Juin 2018</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_plaine_du_loup_2018_06_27</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2018</Default>
+        <Value>2018</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_plaine_du_loup_2018_06_27/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Plaines-du-Loup Janvier 2019</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_plaine_du_loup_2019_01_22</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_plaine_du_loup_2019_01_22/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Plaines-du-Loup Juin 2019</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_plaine_du_loup_2019_06_13</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_plaine_du_loup_2019_06_13/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Plaines-du-Loup Juillet 2020</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_plaine_du_loup_2020_07_09</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2020</Default>
+        <Value>2020</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_plaine_du_loup_2020_07_09/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Plaines-du-Loup Avril 2021</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_plaine_du_loup_2021_04_08</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_plaine_du_loup_2021_04_08/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Plaines-du-Loup Avril 2022</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_plaine_du_loup_2022_04_11</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2022</Default>
+        <Value>2022</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_plaine_du_loup_2022_04_11/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Plaines-du-Loup Avril 2023</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_plaine_du_loup_2023_04_06</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2023</Default>
+        <Value>2023</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_plaine_du_loup_2023_04_06/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Plaines-du-Loup Juin 2023</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_plaine_du_loup_2023_06_21</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2023</Default>
+        <Value>2023</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_plaine_du_loup_2023_06_21/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Plaines-du-Loup Août 2023</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_plaine_du_loup_2023_08_25</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2023</Default>
+        <Value>2023</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_plaine_du_loup_2023_08_25/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Près-de-Vidy Mars 2022</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_pres_de_vidy_2022_03_09</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2022</Default>
+        <Value>2022</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_pres_de_vidy_2022_03_09/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Près-de-Vidy Avril 2016</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_presdevidy_2016_04_28</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2016</Default>
+        <Value>2016</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_presdevidy_2016_04_28/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Quai de Belgique Mars 2016</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_quaibelgique_2016</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2016</Default>
+        <Value>2016</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_quaibelgique_2016/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Saint-Sulpice Avril 2019</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_saint_sulpice_usine_eau_2019_04_08</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_saint_sulpice_usine_eau_2019_04_08/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto la Sallaz 2017</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_sallaz_2017_02_22</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2017</Default>
+        <Value>2017</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_sallaz_2017_02_22/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Le Signal / Montmeillan Février 2017</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_sauvabelin_2017_02_22</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2017</Default>
+        <Value>2017</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_sauvabelin_2017_02_22/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Le Signal / Montmeillan Juin 2017</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_sauvabelin_2017_06_13</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2017</Default>
+        <Value>2017</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_sauvabelin_2017_06_13/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Sauvabelin / Pavement Juin 2018</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_sauvabelin_pavement_2018_06_06</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2018</Default>
+        <Value>2018</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_sauvabelin_pavement_2018_06_06/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Solitaire Janvier 2018</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_solitaire_2018_01_23</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2018</Default>
+        <Value>2018</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_solitaire_2018_01_23/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Solitaire Janvier 2019</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_solitaire_2019_01_22</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_solitaire_2019_01_22/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Solitaire Janvier 2020</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_solitaire_2020_01_22</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2020</Default>
+        <Value>2020</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_solitaire_2020_01_22/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Solitaire Février 2021</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_solitaire_2021_02_04</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_solitaire_2021_02_04/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Solitaire Décembre 2022</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_solitaire_2022_12_20</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2022</Default>
+        <Value>2022</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_solitaire_2022_12_20/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Solitaire Janvier 2024</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_solitaire_2024_01_25</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2024</Default>
+        <Value>2024</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_solitaire_2024_01_25/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto STEP Avril 2016</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_step_2016_04_28</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2016</Default>
+        <Value>2016</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_step_2016_04_28/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto STEP Août 2017</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_step_2017_08_04</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2017</Default>
+        <Value>2017</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_step_2017_08_04/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto STEP Juillet 2018</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_step_2018_07_02</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2018</Default>
+        <Value>2018</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_step_2018_07_02/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto STEP Juillet 2019</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_step_2019_07_11</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_step_2019_07_11/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto STEP Août 2020</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_step_2020_08_18</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2020</Default>
+        <Value>2020</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_step_2020_08_18/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto STEP Août 2021</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_step_2021_08_18</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_step_2021_08_18/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto STEP Novembre 2022</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_step_2022_11_30</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2022</Default>
+        <Value>2022</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_step_2022_11_30/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Tuilière Février 2016</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_tuiliere_2016_02_03</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2016</Default>
+        <Value>2016</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_tuiliere_2016_02_03/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Tuilière Juin 2017</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_tuiliere_2017_06_08</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2017</Default>
+        <Value>2017</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_tuiliere_2017_06_08/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Tuilière Janvier 2018</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_tuiliere_2018_01_25</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2017</Default>
+        <Value>2017</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_tuiliere_2018_01_25/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Tuilière Juin 2018</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_tuiliere_2018_06_20</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2018</Default>
+        <Value>2018</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_tuiliere_2018_06_20/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Tuilière Juin 2019</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_tuiliere_2019_06_19</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2019</Default>
+        <Value>2019</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_tuiliere_2019_06_19/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Tuilière Juillet 2020</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_tuiliere_2020_07_09</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2020</Default>
+        <Value>2020</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_tuiliere_2020_07_09/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Tuilière Juin 2021</ows:Title>
+      <ows:Identifier>orthophotos_ortho_spec_tuiliere_2021_06_01</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_spec_tuiliere_2021_06_01/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Vaud 2004</ows:Title>
+      <ows:Identifier>orthophotos_ortho_vaud_2004</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2004</Default>
+        <Value>2004</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_vaud_2004/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05_zoom0_5</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Orthophoto Vaud 2006</ows:Title>
+      <ows:Identifier>orthophotos_ortho_vaud_2006</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2006</Default>
+        <Value>2006</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/orthophotos_ortho_vaud_2006/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05_zoom0_6</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+    <Layer>
+      <ows:Title>Plan ville</ows:Title>
+      <ows:Identifier>testqgis</ows:Identifier>
+      <Style isDefault="true">
+        <ows:Identifier>default</ows:Identifier>
+      </Style>
+      <Format>image/png</Format>
+      <Dimension>
+        <ows:Identifier>DATE</ows:Identifier>
+        <Default>2021</Default>
+        <Value>2021</Value>
+      </Dimension>
+      <ResourceURL format="image/png" resourceType="tile"
+                   template="https://cartotest.lausanne.ch/tiles/1.0.0/testqgis/default/{DATE}/{TileMatrixSet}/{TileMatrix}/{TileRow}/{TileCol}.png" />
+      <TileMatrixSetLink>
+        <TileMatrixSet>swissgrid_05</TileMatrixSet>
+      </TileMatrixSetLink>
+    </Layer>
+    
+
+    
+    <TileMatrixSet>
+      <ows:Identifier>grid_zoom5_9</ows:Identifier>
+      <ows:SupportedCRS>urn:ogc:def:crs:EPSG::2056</ows:SupportedCRS>
+      <TileMatrix>
+        <ows:Identifier>0</ows:Identifier>
+        <ScaleDenominator>3571.4285714285716</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>1875</MatrixWidth>
+        <MatrixHeight>1250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>1</ows:Identifier>
+        <ScaleDenominator>1785.7142857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>3750</MatrixWidth>
+        <MatrixHeight>2500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>2</ows:Identifier>
+        <ScaleDenominator>892.8571428571429</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>7500</MatrixWidth>
+        <MatrixHeight>5000</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>3</ows:Identifier>
+        <ScaleDenominator>357.14285714285717</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>18750</MatrixWidth>
+        <MatrixHeight>12500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>4</ows:Identifier>
+        <ScaleDenominator>178.57142857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>37500</MatrixWidth>
+        <MatrixHeight>25000</MatrixHeight>
+      </TileMatrix>
+    </TileMatrixSet>
+    <TileMatrixSet>
+      <ows:Identifier>swissgrid_05</ows:Identifier>
+      <ows:SupportedCRS>urn:ogc:def:crs:EPSG::2056</ows:SupportedCRS>
+      <TileMatrix>
+        <ows:Identifier>0</ows:Identifier>
+        <ScaleDenominator>178571.42857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>38</MatrixWidth>
+        <MatrixHeight>25</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>1</ows:Identifier>
+        <ScaleDenominator>71428.57142857143</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>94</MatrixWidth>
+        <MatrixHeight>63</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>2</ows:Identifier>
+        <ScaleDenominator>35714.28571428572</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>188</MatrixWidth>
+        <MatrixHeight>125</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>3</ows:Identifier>
+        <ScaleDenominator>17857.14285714286</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>375</MatrixWidth>
+        <MatrixHeight>250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>4</ows:Identifier>
+        <ScaleDenominator>8928.57142857143</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>750</MatrixWidth>
+        <MatrixHeight>500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>5</ows:Identifier>
+        <ScaleDenominator>3571.4285714285716</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>1875</MatrixWidth>
+        <MatrixHeight>1250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>6</ows:Identifier>
+        <ScaleDenominator>1785.7142857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>3750</MatrixWidth>
+        <MatrixHeight>2500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>7</ows:Identifier>
+        <ScaleDenominator>892.8571428571429</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>7500</MatrixWidth>
+        <MatrixHeight>5000</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>8</ows:Identifier>
+        <ScaleDenominator>357.14285714285717</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>18750</MatrixWidth>
+        <MatrixHeight>12500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>9</ows:Identifier>
+        <ScaleDenominator>178.57142857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>37500</MatrixWidth>
+        <MatrixHeight>25000</MatrixHeight>
+      </TileMatrix>
+    </TileMatrixSet>
+    <TileMatrixSet>
+      <ows:Identifier>swissgrid_05_zoom0_5</ows:Identifier>
+      <ows:SupportedCRS>urn:ogc:def:crs:EPSG::2056</ows:SupportedCRS>
+      <TileMatrix>
+        <ows:Identifier>0</ows:Identifier>
+        <ScaleDenominator>178571.42857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>38</MatrixWidth>
+        <MatrixHeight>25</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>1</ows:Identifier>
+        <ScaleDenominator>71428.57142857143</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>94</MatrixWidth>
+        <MatrixHeight>63</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>2</ows:Identifier>
+        <ScaleDenominator>35714.28571428572</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>188</MatrixWidth>
+        <MatrixHeight>125</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>3</ows:Identifier>
+        <ScaleDenominator>17857.14285714286</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>375</MatrixWidth>
+        <MatrixHeight>250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>4</ows:Identifier>
+        <ScaleDenominator>8928.57142857143</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>750</MatrixWidth>
+        <MatrixHeight>500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>5</ows:Identifier>
+        <ScaleDenominator>3571.4285714285716</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>1875</MatrixWidth>
+        <MatrixHeight>1250</MatrixHeight>
+      </TileMatrix>
+    </TileMatrixSet>
+    <TileMatrixSet>
+      <ows:Identifier>swissgrid_05_zoom0_6</ows:Identifier>
+      <ows:SupportedCRS>urn:ogc:def:crs:EPSG::2056</ows:SupportedCRS>
+      <TileMatrix>
+        <ows:Identifier>0</ows:Identifier>
+        <ScaleDenominator>178571.42857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>38</MatrixWidth>
+        <MatrixHeight>25</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>1</ows:Identifier>
+        <ScaleDenominator>71428.57142857143</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>94</MatrixWidth>
+        <MatrixHeight>63</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>2</ows:Identifier>
+        <ScaleDenominator>35714.28571428572</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>188</MatrixWidth>
+        <MatrixHeight>125</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>3</ows:Identifier>
+        <ScaleDenominator>17857.14285714286</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>375</MatrixWidth>
+        <MatrixHeight>250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>4</ows:Identifier>
+        <ScaleDenominator>8928.57142857143</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>750</MatrixWidth>
+        <MatrixHeight>500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>5</ows:Identifier>
+        <ScaleDenominator>3571.4285714285716</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>1875</MatrixWidth>
+        <MatrixHeight>1250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>6</ows:Identifier>
+        <ScaleDenominator>1785.7142857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>3750</MatrixWidth>
+        <MatrixHeight>2500</MatrixHeight>
+      </TileMatrix>
+    </TileMatrixSet>
+    <TileMatrixSet>
+      <ows:Identifier>swissgrid_05_zoom0_8</ows:Identifier>
+      <ows:SupportedCRS>urn:ogc:def:crs:EPSG::2056</ows:SupportedCRS>
+      <TileMatrix>
+        <ows:Identifier>0</ows:Identifier>
+        <ScaleDenominator>178571.42857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>38</MatrixWidth>
+        <MatrixHeight>25</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>1</ows:Identifier>
+        <ScaleDenominator>71428.57142857143</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>94</MatrixWidth>
+        <MatrixHeight>63</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>2</ows:Identifier>
+        <ScaleDenominator>35714.28571428572</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>188</MatrixWidth>
+        <MatrixHeight>125</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>3</ows:Identifier>
+        <ScaleDenominator>17857.14285714286</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>375</MatrixWidth>
+        <MatrixHeight>250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>4</ows:Identifier>
+        <ScaleDenominator>8928.57142857143</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>750</MatrixWidth>
+        <MatrixHeight>500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>5</ows:Identifier>
+        <ScaleDenominator>3571.4285714285716</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>1875</MatrixWidth>
+        <MatrixHeight>1250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>6</ows:Identifier>
+        <ScaleDenominator>1785.7142857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>3750</MatrixWidth>
+        <MatrixHeight>2500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>7</ows:Identifier>
+        <ScaleDenominator>892.8571428571429</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>7500</MatrixWidth>
+        <MatrixHeight>5000</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>8</ows:Identifier>
+        <ScaleDenominator>357.14285714285717</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>18750</MatrixWidth>
+        <MatrixHeight>12500</MatrixHeight>
+      </TileMatrix>
+    </TileMatrixSet>
+    <TileMatrixSet>
+      <ows:Identifier>testgrid_zoom0_9</ows:Identifier>
+      <ows:SupportedCRS>urn:ogc:def:crs:EPSG::2056</ows:SupportedCRS>
+      <TileMatrix>
+        <ows:Identifier>0</ows:Identifier>
+        <ScaleDenominator>178571.42857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>38</MatrixWidth>
+        <MatrixHeight>25</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>1</ows:Identifier>
+        <ScaleDenominator>71428.57142857143</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>94</MatrixWidth>
+        <MatrixHeight>63</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>2</ows:Identifier>
+        <ScaleDenominator>35714.28571428572</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>188</MatrixWidth>
+        <MatrixHeight>125</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>3</ows:Identifier>
+        <ScaleDenominator>17857.14285714286</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>375</MatrixWidth>
+        <MatrixHeight>250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>4</ows:Identifier>
+        <ScaleDenominator>8928.57142857143</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>750</MatrixWidth>
+        <MatrixHeight>500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>5</ows:Identifier>
+        <ScaleDenominator>3571.4285714285716</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>1875</MatrixWidth>
+        <MatrixHeight>1250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>6</ows:Identifier>
+        <ScaleDenominator>1785.7142857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>3750</MatrixWidth>
+        <MatrixHeight>2500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>7</ows:Identifier>
+        <ScaleDenominator>892.8571428571429</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>7500</MatrixWidth>
+        <MatrixHeight>5000</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>8</ows:Identifier>
+        <ScaleDenominator>357.14285714285717</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>18750</MatrixWidth>
+        <MatrixHeight>12500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>9</ows:Identifier>
+        <ScaleDenominator>178.57142857142858</ScaleDenominator>
+        <TopLeftCorner>2420000 1350000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>37500</MatrixWidth>
+        <MatrixHeight>25000</MatrixHeight>
+      </TileMatrix>
+    </TileMatrixSet>
+
+
+<TileMatrixSet>
+      <ows:Identifier>swissgrid_05_cgil</ows:Identifier>
+      <ows:SupportedCRS>urn:ogc:def:crs:EPSG::2056</ows:SupportedCRS>
+      <TileMatrix>
+        <ows:Identifier>0</ows:Identifier>
+        <ScaleDenominator>178571.42857142858</ScaleDenominator>
+        <TopLeftCorner>2537000 1153000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>38</MatrixWidth>
+        <MatrixHeight>25</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>1</ows:Identifier>
+        <ScaleDenominator>71428.57142857143</ScaleDenominator>
+        <TopLeftCorner>2537000 1153000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>94</MatrixWidth>
+        <MatrixHeight>63</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>2</ows:Identifier>
+        <ScaleDenominator>35714.28571428572</ScaleDenominator>
+        <TopLeftCorner>2537000 1153000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>188</MatrixWidth>
+        <MatrixHeight>125</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>3</ows:Identifier>
+        <ScaleDenominator>17857.14285714286</ScaleDenominator>
+        <TopLeftCorner>2537000 1153000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>375</MatrixWidth>
+        <MatrixHeight>250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>4</ows:Identifier>
+        <ScaleDenominator>8928.57142857143</ScaleDenominator>
+        <TopLeftCorner>2537000 1153000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>750</MatrixWidth>
+        <MatrixHeight>500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>5</ows:Identifier>
+        <ScaleDenominator>3571.4285714285716</ScaleDenominator>
+        <TopLeftCorner>2537000 1153000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>1875</MatrixWidth>
+        <MatrixHeight>1250</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>6</ows:Identifier>
+        <ScaleDenominator>1785.7142857142858</ScaleDenominator>
+        <TopLeftCorner>2537000 1153000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>3750</MatrixWidth>
+        <MatrixHeight>2500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>7</ows:Identifier>
+        <ScaleDenominator>892.8571428571429</ScaleDenominator>
+        <TopLeftCorner>2537000 1153000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>7500</MatrixWidth>
+        <MatrixHeight>5000</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>8</ows:Identifier>
+        <ScaleDenominator>357.14285714285717</ScaleDenominator>
+        <TopLeftCorner>2537000 1153000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>18750</MatrixWidth>
+        <MatrixHeight>12500</MatrixHeight>
+      </TileMatrix>
+      <TileMatrix>
+        <ows:Identifier>9</ows:Identifier>
+        <ScaleDenominator>178.57142857142858</ScaleDenominator>
+        <TopLeftCorner>2537000 1153000</TopLeftCorner>
+        <TileWidth>256</TileWidth>
+        <TileHeight>256</TileHeight>
+        <MatrixWidth>37500</MatrixWidth>
+        <MatrixHeight>25000</MatrixHeight>
+      </TileMatrix>
+    </TileMatrixSet>
+
+  </Contents>
+</Capabilities>

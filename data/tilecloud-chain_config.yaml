@@ -1,0 +1,1839 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tilecloud-chain/master/tilecloud_chain/schema.json
+
+grids:
+    # grid name, I just recommends to add the min resolution because it's common to not generate all the layers at the same resolution.
+    swissgrid_05:
+        # resolutions [required]
+        # Resolutions from eCH-0056 - WMTS-07
+        # https://www.ech.ch/dokument/473ea824-bbcd-43fa-ad0a-c7c84edfa1b8
+        #resolutions: [4000, 2000, 1000, 500, 250, 100, 50, 20, 10, 5, 2.5, 1, 0.5, 0.25, 0.1, 0.05] valeurs Y. Jacolin
+        resolutions: [50,20,10,5,2.5,1,0.5,0.25,0.1,0.05]
+        # bbox [required]
+        bbox: [2420000, 1030000, 2900000, 1350000] #valeurs c2c -NE PAS CHANGER, modifier la bbox dans la définition du layer-
+        # srs [required]
+        srs: EPSG:2056
+
+    grid_zoom5_9:
+        # resolutions [required]
+        resolutions: [1,0.5,0.25,0.1,0.05]
+        #resolutions: [0.1,0.05]
+        # bbox [required]
+        bbox: [2420000, 1030000, 2900000, 1350000] #valeurs c2c -NE PAS CHANGER, modifier la bbox dans la définition du layer-
+        # srs [required]
+        srs: EPSG:2056
+
+    testgrid_zoom0_9:
+        # resolutions [required]
+        resolutions: [50,20,10,5,2.5,1,0.5,0.25,0.1,0.05]
+        # bbox [required]
+        bbox: [2420000, 1030000, 2900000, 1350000] #valeurs c2c -NE PAS CHANGER, modifier la bbox dans la définition du layer-
+        # srs [required]
+        srs: EPSG:2056
+
+    swissgrid_05_zoom0_5: #pour configuer zoom software ortho 2004 dans WMTSCapabilities.xml (sans mapcache)
+        # resolutions [required]
+        resolutions: [50,20,10,5,2.5,1]
+        # bbox [required]
+        bbox: [2420000, 1030000, 2900000, 1350000] #valeurs c2c -NE PAS CHANGER, modifier la bbox dans la définition du layer-
+        # srs [required]
+        srs: EPSG:2056
+
+    swissgrid_05_zoom0_6: #pour configuer zoom software carte nationale dans WMTSCapabilities.xml (sans mapcache)
+        # resolutions [required]
+        resolutions: [50,20,10,5,2.5,1,0.5]
+        # bbox [required]
+        bbox: [2420000, 1030000, 2900000, 1350000] #valeurs c2c -NE PAS CHANGER, modifier la bbox dans la définition du layer-
+        # srs [required]
+        srs: EPSG:2056
+
+    swissgrid_05_zoom0_8: #pour configuer zoom software orthos Lausanne dans WMTSCapabilities.xml (sans mapcache)
+        # resolutions [required]
+        resolutions: [50,20,10,5,2.5,1,0.5,0.25,0.1]
+        # bbox [required]
+        bbox: [2420000, 1030000, 2900000, 1350000] #valeurs c2c -NE PAS CHANGER, modifier la bbox dans la définition du layer-
+        # srs [required]
+        srs: EPSG:2056
+
+
+caches:
+    local:
+        type: filesystem
+        folder: /var/sig/tiles
+        # for GetCapabilities
+        http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
+    tilesmn95:
+        type: filesystem
+        folder: /var/sig/tiles
+        # for GetCapabilities
+        http_url: https://tilesmn95.lausanne.ch/
+#    s3:
+#        type: s3
+#        bucket: ${TILEGENERATION_S3_BUCKET}
+#        folder: ''
+#        # for GetCapabilities
+#        http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
+#        cache_control: 'public,max-age=14400'
+#        host: replaceme
+
+# this defines some defaults values for all the layers
+defaults:
+    layer: &layer
+        type: wms
+        grid: swissgrid_05
+        # The minimum resolution to seed, useful to use with mapcache, optional.
+        # min_resolution_seed: 1
+        # the URL of the WMS server to used
+        url: ${MAPSERVER_URL}
+        # Set the headers to get the right virtual host, and don't get any cached result
+        headers:
+            Host: '${VISIBLE_WEB_HOST}'
+            Cache-Control: no-cache,no-store
+            Pragma: no-cache
+        # file name extension
+        extension: png
+        # the bbox there we want to generate tiles
+        #bbox: [493000, 114000, 586000, 204000]
+
+        # mime type used for the WMS request and the WMTS capabilities generation
+        mime_type: image/png
+        wmts_style: default
+        # the WMTS dimensions definition [default to []]
+        dimensions:
+            -   name: DATE
+                # the default value for the WMTS capabilities
+                default: '2021'
+                # the generated values
+                generate: ['2021']
+                # all the available values in the WMTS capabilities
+                values: ['2021']
+        # the meta tiles definition [default to false]
+        meta: true
+        # the meta tiles size [default to 8]
+        meta_size: 16
+        # the meta tiles buffer [default to 128] (The meta_buffer should be set to a bigger value than half the size of the longest label.)
+        meta_buffer: 30
+        # connexion an sql to get geometries (in column named geom) where we want to generate tiles
+        # Warn: too complex result can slow down the application
+#    connection: host=localhost port=5432 user=www-data password=www-data dbname=<db>
+#    geoms:
+#        -   sql: <column> AS geom FROM <table>
+        # size and hash used to detect empty tiles and metatiles [optional, default to None]
+        empty_metatile_detection:
+            size: 740
+            hash: 3237839c217b51b8a9644d596982f342f8041546
+        empty_tile_detection:
+            size: 921
+            hash: 1e3da153be87a493c4c71198366485f290cad43c
+
+layers:
+    fonds_geo_osm_bdcad_gris:
+        <<: *layer
+        layers: osm_bdcad_gris_msgroup,bdcad_cs_autres_msgroup,bdcad_cs_bati_msgroup,bdcad_cs_bati_eca,bdcad_cs_ad_bati,bdcad_od_objets_msgroup,bdcad_od_labels_msgroup,bdcad_bf_parc_pol,bdcad_bf_parc_pol_dp_msgroup,bdcad_bf_parc_pol_ddp_msgroup,bdcad_bf_point,bdcad_bf_parc_no
+        title: Plan cadastral
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+        #bbox: [2532500, 1149000, 2545625, 1161000] #lidar extent
+        #bbox: [2537500, 1152500, 2538500, 1153000] #test
+    fonds_geo_osm_bdcad_grisA:
+        <<: *layer
+        layers: osm_bdcad_gris_msgroup,bdcad_cs_autres_msgroup,bdcad_cs_bati_msgroup,bdcad_cs_bati_eca,bdcad_cs_ad_bati,bdcad_od_objets_msgroup,bdcad_od_labels_msgroup,bdcad_bf_parc_pol,bdcad_bf_parc_pol_dp_msgroup,bdcad_bf_parc_pol_ddp_msgroup,bdcad_bf_point,bdcad_bf_parc_no
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1143000, 2559000, 1156000] #gc extent + 3km buffer A (horizontal split)
+        #bbox: [2532500, 1149000, 2545625, 1155000] #lidar extentA (horizontal split)
+        #bbox: [2538000, 1151000, 2539000, 1151500] #testA (horizontal split)
+    fonds_geo_osm_bdcad_grisB:
+        <<: *layer
+        layers: osm_bdcad_gris_msgroup,bdcad_cs_autres_msgroup,bdcad_cs_bati_msgroup,bdcad_cs_bati_eca,bdcad_cs_ad_bati,bdcad_od_objets_msgroup,bdcad_od_labels_msgroup,bdcad_bf_parc_pol,bdcad_bf_parc_pol_dp_msgroup,bdcad_bf_parc_pol_ddp_msgroup,bdcad_bf_point,bdcad_bf_parc_no
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1156000, 2559000, 1169000] #gc extent + 3km buffer B (horizontal split)
+        #bbox: [2532500, 1155000, 2545625, 1161000] #lidar extentB (horizontal split)
+        #bbox: [2538000, 1151500, 2539000, 1152000] #testB (horizontal split)
+
+    fonds_geo_osm_bdcad_couleur:
+        <<: *layer
+        layers: osm_bdcad_couleur_msgroup,planville_cs_autres_msgroup,planville_cs_bati_pol_sout,planville_marquage_msgroup,planville_od_objets_msgroup,planville_arbres_goeland_msgroup,planville_cs_bati_msgroup,planville_od_labels_msgroup
+        title: Plan ville
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+        #bbox: [2532500, 1149000, 2545625, 1161000] #lidar extent
+        #bbox: [2537500, 1152500, 2538500, 1153000] #test
+        #bbox: [2537500, 1152500, 2538000, 1152750] #test2
+    fonds_geo_osm_bdcad_couleurA:
+        <<: *layer
+        layers: osm_bdcad_couleur_msgroup,planville_cs_autres_msgroup,planville_cs_bati_pol_sout,planville_marquage_msgroup,planville_od_objets_msgroup,planville_arbres_goeland_msgroup,planville_cs_bati_msgroup,planville_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1143000, 2559000, 1156000] #gc extent + 3km buffer A (horizontal split)
+        #bbox: [2532500, 1149000, 2545625, 1155000] #lidar extentA (horizontal split)
+        #bbox: [2538000, 1151000, 2539000, 1151500] #testA (horizontal split)
+    fonds_geo_osm_bdcad_couleurB:
+        <<: *layer
+        layers: osm_bdcad_couleur_msgroup,planville_cs_autres_msgroup,planville_cs_bati_pol_sout,planville_marquage_msgroup,planville_od_objets_msgroup,planville_arbres_goeland_msgroup,planville_cs_bati_msgroup,planville_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1156000, 2559000, 1169000] #gc extent + 3km buffer B (horizontal split)
+        #bbox: [2532500, 1155000, 2545625, 1161000] #lidar extentB (horizontal split)
+        #bbox: [2538000, 1151500, 2539000, 1152000] #testB (horizontal split)
+
+    fonds_geo_devcom:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_devcom_msgroup,devcom_cs_autres_msgroup,devcom_cs_bati_pol_sout,devcom_od_objets_msgroup,devcom_arbres_goeland_msgroup,devcom_cs_bati_msgroup,devcom_od_labels_msgroup
+        title: Plan ville (pastel)
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+        #bbox: [2532500, 1149000, 2545625, 1161000] #lidar extent
+        #bbox: [2537500, 1152500, 2538500, 1153000] #test
+    fonds_geo_devcomA:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_devcom_msgroup,devcom_cs_autres_msgroup,devcom_cs_bati_pol_sout,devcom_od_objets_msgroup,devcom_arbres_goeland_msgroup,devcom_cs_bati_msgroup,devcom_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1143000, 2559000, 1156000] #gc extent + 3km buffer A (horizontal split)
+        #bbox: [2532500, 1149000, 2545625, 1155000] #lidar extentA (horizontal split)
+        #bbox: [2538000, 1151000, 2539000, 1151500] #testA (horizontal split)
+    fonds_geo_devcomB:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_devcom_msgroup,devcom_cs_autres_msgroup,devcom_cs_bati_pol_sout,devcom_od_objets_msgroup,devcom_arbres_goeland_msgroup,devcom_cs_bati_msgroup,devcom_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1156000, 2559000, 1169000] #gc extent + 3km buffer B (horizontal split)
+        #bbox: [2532500, 1155000, 2545625, 1161000] #lidar extentB (horizontal split)
+        #bbox: [2538000, 1151500, 2539000, 1152000] #testB (horizontal split)
+
+    fonds_geo_osm_bdcad_dark:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_dark_msgroup,planvilledark_cs_autres_msgroup,planvilledark_cs_bati_pol_sout,planvilledark_marquage_msgroup,planvilledark_od_objets_msgroup,planvilledark_arbres_goeland_msgroup,planvilledark_cs_bati_msgroup,planvilledark_od_labels_msgroup
+        title: Plan ville (sombre)
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+        #bbox: [2532500, 1149000, 2545625, 1161000] #lidar extent
+        #bbox: [2537500, 1152500, 2538500, 1153000] #test
+    fonds_geo_osm_bdcad_darkA:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_dark_msgroup,planvilledark_cs_autres_msgroup,planvilledark_cs_bati_pol_sout,planvilledark_marquage_msgroup,planvilledark_od_objets_msgroup,planvilledark_arbres_goeland_msgroup,planvilledark_cs_bati_msgroup,planvilledark_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1143000, 2559000, 1156000] #gc extent + 3km buffer A (horizontal split)
+        #bbox: [2532500, 1149000, 2545625, 1155000] #lidar extentA (horizontal split)
+        #bbox: [2538000, 1151000, 2539000, 1151500] #testA (horizontal split)
+    fonds_geo_osm_bdcad_darkB:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_dark_msgroup,planvilledark_cs_autres_msgroup,planvilledark_cs_bati_pol_sout,planvilledark_marquage_msgroup,planvilledark_od_objets_msgroup,planvilledark_arbres_goeland_msgroup,planvilledark_cs_bati_msgroup,planvilledark_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2520000, 1156000, 2559000, 1169000] #gc extent + 3km buffer B (horizontal split)
+        #bbox: [2532500, 1155000, 2545625, 1161000] #lidar extentB (horizontal split)
+        #bbox: [2538000, 1151500, 2539000, 1152000] #testB (horizontal split)
+
+    lidargrid0_9_gris:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_gris_msgroup,bdcad_cs_autres_msgroup,bdcad_cs_bati_msgroup,bdcad_cs_bati_eca,bdcad_cs_ad_bati,bdcad_od_objets_msgroup,bdcad_od_labels_msgroup,bdcad_bf_parc_pol,bdcad_bf_parc_pol_dp_msgroup,bdcad_bf_parc_pol_ddp_msgroup,bdcad_bf_point,bdcad_bf_parc_no
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1149000, 2545625, 1161000] #lidar extent
+        #bbox: [2538000, 1151000, 2538200, 1151200] #test
+        #post_process: optipng
+    lidargrid0_9_grisA:
+        <<: *layer
+        grid: swissgrid_05
+        layers: bdcad_cs_autres_msgroup,bdcad_cs_bati_msgroup,bdcad_cs_bati_eca,bdcad_cs_ad_bati,bdcad_od_objets_msgroup,bdcad_od_labels_msgroup,bdcad_bf_parc_pol,bdcad_bf_parc_pol_dp_msgroup,bdcad_bf_parc_pol_ddp_msgroup,bdcad_bf_point,bdcad_bf_parc_no
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1149000, 2545625, 1155000] #lidar extentA (horizontal split)
+        #bbox: [2538000, 1151000, 2538200, 1151100] #testA (horizontal split)
+        #post_process: optipng
+    lidargrid0_9_grisB:
+        <<: *layer
+        grid: swissgrid_05
+        layers: bdcad_cs_autres_msgroup,bdcad_cs_bati_msgroup,bdcad_cs_bati_eca,bdcad_cs_ad_bati,bdcad_od_objets_msgroup,bdcad_od_labels_msgroup,bdcad_bf_parc_pol,bdcad_bf_parc_pol_dp_msgroup,bdcad_bf_parc_pol_ddp_msgroup,bdcad_bf_point,bdcad_bf_parc_no
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1155000, 2545625, 1161000] #lidar extentB (horizontal split)
+        #bbox: [2538000, 1151100, 2538200, 1151200] #testB (horizontal split)
+        #post_process: optipng
+
+    lidargrid0_9_couleur:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_couleur_msgroup,planville_cs_autres_msgroup,planville_cs_bati_pol_sout,planville_marquage_msgroup,planville_od_objets_msgroup,planville_arbres_goeland_msgroup,planville_cs_bati_msgroup,planville_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1149000, 2545625, 1161000] #lidar extent
+        #bbox: [2538000, 1151000, 2538200, 1151200] #test
+        #post_process: optipng
+    lidargrid0_9_couleurA:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_couleur_msgroup,planville_cs_autres_msgroup,planville_cs_bati_pol_sout,planville_marquage_msgroup,planville_od_objets_msgroup,planville_arbres_goeland_msgroup,planville_cs_bati_msgroup,planville_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1149000, 2545625, 1155000] #lidar extentA (horizontal split)
+        #bbox: [2538000, 1151000, 2538200, 1151100] #testA (horizontal split)
+        #post_process: optipng
+    lidargrid0_9_couleurB:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_couleur_msgroup,planville_cs_autres_msgroup,planville_cs_bati_pol_sout,planville_marquage_msgroup,planville_od_objets_msgroup,planville_arbres_goeland_msgroup,planville_cs_bati_msgroup,planville_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1155000, 2545625, 1161000] #lidar extentB (horizontal split)
+        #bbox: [2538000, 1151100, 2538200, 1151200] #testB (horizontal split)
+        #post_process: optipng
+
+    lidargrid0_9_devcom:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_devcom_msgroup,devcom_cs_autres_msgroup,devcom_cs_bati_pol_sout,devcom_od_objets_msgroup,devcom_arbres_goeland_msgroup,devcom_cs_bati_msgroup,devcom_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1149000, 2545625, 1161000] #lidar extent
+        #bbox: [2538000, 1151000, 2538200, 1151200] #test
+    lidargrid0_9_devcomA:
+        <<: *layer
+        grid: swissgrid_05
+        layers: devcom_cs_autres_msgroup,devcom_cs_bati_pol_sout,devcom_od_objets_msgroup,devcom_arbres_goeland_msgroup,devcom_cs_bati_msgroup,devcom_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1149000, 2545625, 1155000] #lidar extentA (horizontal split)
+        #bbox: [2538000, 1151000, 2538200, 1151100] #testA (horizontal split)
+    lidargrid0_9_devcomB:
+        <<: *layer
+        grid: swissgrid_05
+        layers: devcom_cs_autres_msgroup,devcom_cs_bati_pol_sout,devcom_od_objets_msgroup,devcom_arbres_goeland_msgroup,devcom_cs_bati_msgroup,devcom_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1155000, 2545625, 1161000] #lidar extentB (horizontal split)
+        #bbox: [2538000, 1151100, 2538200, 1151200] #testB (horizontal split)
+
+    lidargrid0_9_dark:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_dark_msgroup,planvilledark_cs_autres_msgroup,planvilledark_cs_bati_pol_sout,planvilledark_marquage_msgroup,planvilledark_od_objets_msgroup,planvilledark_arbres_goeland_msgroup,planvilledark_cs_bati_msgroup,planvilledark_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1149000, 2545625, 1161000] #lidar extent
+        #bbox: [2538000, 1151000, 2538200, 1151200] #test
+    lidargrid0_9_darkA:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_dark_msgroup,planvilledark_cs_autres_msgroup,planvilledark_cs_bati_pol_sout,planvilledark_marquage_msgroup,planvilledark_od_objets_msgroup,planvilledark_arbres_goeland_msgroup,planvilledark_cs_bati_msgroup,planvilledark_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1149000, 2545625, 1155000] #lidar extentA (horizontal split)
+        #bbox: [2538000, 1151000, 2538200, 1151100] #testA (horizontal split)
+    lidargrid0_9_darkB:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_dark_msgroup,planvilledark_cs_autres_msgroup,planvilledark_cs_bati_pol_sout,planvilledark_marquage_msgroup,planvilledark_od_objets_msgroup,planvilledark_arbres_goeland_msgroup,planvilledark_cs_bati_msgroup,planvilledark_od_labels_msgroup
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1155000, 2545625, 1161000] #lidar extentB (horizontal split)
+        #bbox: [2538000, 1151100, 2538200, 1151200] #testB (horizontal split)
+
+    fonds_geo_conduites:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_gris_msgroup,bdcad_cs_autres_msgroup,bdcad_cs_bati_msgroup,bdcad_cs_bati_eca,bdcad_cs_ad_bati,bdcad_od_objets_msgroup,bdcad_od_labels_msgroup,bdcad_bf_parc_pol,bdcad_bf_parc_pol_dp_msgroup,bdcad_bf_parc_pol_ddp_msgroup,bdcad_bf_point,bdcad_bf_parc_no,conduites_assa_lines,conduites_assa_symbols_point,conduites_assa_symbols_line,conduites_assa_txt,conduites_chauffage_lines,conduites_chauffage_symbols,conduites_chauffage_txt,conduites_eau_lines,conduites_eau_symbols,conduites_eau_txt,conduites_elec_lines,conduites_elec_symbols,conduites_elec_txt,conduites_gaz_lines,conduites_gaz_symbols,conduites_gaz_txt,conduites_multiservices_lines,conduites_multiservices_symbols,conduites_multiservices_txt,conduites_police_lines,conduites_police_symbols,conduites_police_txt,conduites_telecom_lines,conduites_telecom_symbols,conduites_telecom_txt,conduites_tl_lines,conduites_tl__symbols,conduites_tl_txt,conduites_complements_lines,conduites_complements_symbols,conduites_complements_txt
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        title: Conduites
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1149000, 2545625, 1161000] #lidar extent
+        #bbox: [2538000, 1151000, 2539000, 1152000] #test
+    fonds_geo_conduitesA:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_gris_msgroup,bdcad_cs_autres_msgroup,bdcad_cs_bati_msgroup,bdcad_cs_bati_eca,bdcad_cs_ad_bati,bdcad_od_objets_msgroup,bdcad_od_labels_msgroup,bdcad_bf_parc_pol,bdcad_bf_parc_pol_dp_msgroup,bdcad_bf_parc_pol_ddp_msgroup,bdcad_bf_point,bdcad_bf_parc_no,conduites_assa_lines,conduites_assa_symbols_point,conduites_assa_symbols_line,conduites_assa_txt,conduites_chauffage_lines,conduites_chauffage_symbols,conduites_chauffage_txt,conduites_eau_lines,conduites_eau_symbols,conduites_eau_txt,conduites_elec_lines,conduites_elec_symbols,conduites_elec_txt,conduites_gaz_lines,conduites_gaz_symbols,conduites_gaz_txt,conduites_multiservices_lines,conduites_multiservices_symbols,conduites_multiservices_txt,conduites_police_lines,conduites_police_symbols,conduites_police_txt,conduites_telecom_lines,conduites_telecom_symbols,conduites_telecom_txt,conduites_tl_lines,conduites_tl__symbols,conduites_tl_txt,conduites_complements_lines,conduites_complements_symbols,conduites_complements_txt
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1149000, 2545625, 1155000] #lidar extentA (horizontal split)
+        #bbox: [2538000, 1151000, 2539000, 1152000] #test
+    fonds_geo_conduitesB:
+        <<: *layer
+        grid: swissgrid_05
+        layers: osm_bdcad_gris_msgroup,bdcad_cs_autres_msgroup,bdcad_cs_bati_msgroup,bdcad_cs_bati_eca,bdcad_cs_ad_bati,bdcad_od_objets_msgroup,bdcad_od_labels_msgroup,bdcad_bf_parc_pol,bdcad_bf_parc_pol_dp_msgroup,bdcad_bf_parc_pol_ddp_msgroup,bdcad_bf_point,bdcad_bf_parc_no,conduites_assa_lines,conduites_assa_symbols_point,conduites_assa_symbols_line,conduites_assa_txt,conduites_chauffage_lines,conduites_chauffage_symbols,conduites_chauffage_txt,conduites_eau_lines,conduites_eau_symbols,conduites_eau_txt,conduites_elec_lines,conduites_elec_symbols,conduites_elec_txt,conduites_gaz_lines,conduites_gaz_symbols,conduites_gaz_txt,conduites_multiservices_lines,conduites_multiservices_symbols,conduites_multiservices_txt,conduites_police_lines,conduites_police_symbols,conduites_police_txt,conduites_telecom_lines,conduites_telecom_symbols,conduites_telecom_txt,conduites_tl_lines,conduites_tl__symbols,conduites_tl_txt,conduites_complements_lines,conduites_complements_symbols,conduites_complements_txt
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2532500, 1155000, 2545625, 1161000] #lidar extentB (horizontal split)
+        #bbox: [2538000, 1151000, 2539000, 1152000] #test
+
+    fonds_geo_carte_nationale_msgroup:
+        <<: *layer
+        grid: swissgrid_05_zoom0_6
+        layers: fonds_geo_carte_nationale_msgroup
+        title: Carte nationale
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2014'
+            # the generated value
+            generate: ['2014']
+            # all the available values in the WMTS capabilities
+            values: ['2014']
+        mime_type: image/png
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: 4db8f95723fde4b946f9ffae895e7ddf57f1723a
+        meta: false # disabling metatiles because of issues 176
+        #bbox: [2528100, 1147000, 2550000, 1164000]
+        bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+        #min_resolution_seed: 0.5
+                
+    altimetrie_ombrage_mnt:
+        <<: *layer
+        layers: altimetrie_ombrage_mnt
+        title: Ombrage MNT 2019
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2531999, 1148477, 2546001, 1162001]            
+    altimetrie_ombrage_mns:
+        <<: *layer
+        layers: altimetrie_ombrage_mns
+        title: Ombrage MNS 2019
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2531999, 1148477, 2546001, 1162001]  
+    altimetrie_pente_terrain:
+        <<: *layer
+        layers: altimetrie_pente_terrain
+        title: Pente du terrain
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2531999, 1148478, 2546000, 1162001]   
+    altimetrie_pente_terrain_class:
+        <<: *layer
+        layers: altimetrie_pente_terrain_class
+        title: Pente du terrain (%)
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2531999, 1148478, 2546000, 1162001]     
+    altimetrie_orientation_terrain_class:
+        <<: *layer
+        layers: altimetrie_orientation_terrain_class
+        title: Orientation du terrain
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2531999, 1148478, 2546000, 1162001]  
+    energie_ombrage_mns_rayonnement:
+        <<: *layer
+        layers: energie_ombrage_mns_rayonnement
+        title: Rayonnement solaire
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2531999, 1148477, 2546001, 1162001]                                   
+                
+    orthophotos_ortho_lausanne_2001:
+        <<: *layer
+        grid: swissgrid_05_zoom0_8
+        layers: orthophotos_ortho_lausanne_2001
+        title: Orthophoto Lausanne 2001
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2001'
+            # the generated value
+            generate: ['2001']
+            # all the available values in the WMTS capabilities
+            values: ['2001']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        meta: false # disabling metatiles because of issues 176
+        #bbox: [253300, 1150000, 2545000, 1159000]
+        bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+        #min_resolution_seed: 0.25
+
+    orthophotos_ortho_vaud_2004:
+        <<: *layer
+        layers: orthophotos_ortho_vaud_2004
+        title: Orthophoto Vaud 2004
+        grid: swissgrid_05_zoom0_5
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2004'
+            # the generated value
+            generate: ['2004']
+            # all the available values in the WMTS capabilities
+            values: ['2004']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        meta: false # disabling metatiles because of issues 176
+        #bbox: [2532500, 1149000, 2545625, 1158000]
+        bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+        #min_resolution_seed: 1
+
+    orthophotos_ortho_vaud_2006:
+        <<: *layer
+        layers: orthophotos_ortho_vaud_2006
+        title: Orthophoto Vaud 2006
+        grid: swissgrid_05_zoom0_6
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2006'
+            # the generated value
+            generate: ['2006']
+            # all the available values in the WMTS capabilities
+            values: ['2006']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        meta: false # disabling metatiles because of issues 176
+        #bbox: [253200, 1149000, 2546000, 1159000]
+        bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+        #min_resolution_seed: 0.5
+
+    orthophotos_ortho_lausanne_2008:
+        <<: *layer
+        grid: swissgrid_05_zoom0_8
+        layers: orthophotos_ortho_lausanne_2008
+        title: Orthophoto Lausanne 2008
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2008'
+            # the generated value
+            generate: ['2008']
+            # all the available values in the WMTS capabilities
+            values: ['2008']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        meta: false # disabling metatiles because of issues 176
+        #bbox: [253300, 1150000, 2545000, 1159000]
+        bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+        #min_resolution_seed: 0.25
+
+    orthophotos_ortho_lidar_2012:
+        <<: *layer
+        grid: swissgrid_05_zoom0_8
+        layers: orthophotos_ortho_lidar_2012
+        title: Orthophoto Lausanne 2012
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2012'
+            # the generated value
+            generate: ['2012']
+            # all the available values in the WMTS capabilities
+            values: ['2012']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        #bbox: [2532500, 1149000, 2545625, 1161000]
+        bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+
+    orthophotos_ortho_lidar_2016:
+        <<: *layer
+        grid: swissgrid_05_zoom0_8
+        layers: orthophotos_ortho_lidar_2016
+        title: Orthophoto Lausanne 2016
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2016'
+            # the generated value
+            generate: ['2016']
+            # all the available values in the WMTS capabilities
+            values: ['2016']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        #bbox: [2532500, 1149000, 2545625, 1161000]
+        bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+
+    orthophotos_ortho_lidar_2024:
+        <<: *layer
+        layers: orthophotos_ortho_lidar_2024
+        title: Orthophoto Lausanne 2024
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2024'
+            # the generated value
+            generate: ['2024']
+            # all the available values in the WMTS capabilities
+            values: ['2024']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        meta: false # disabling metatiles because of issues 176
+        #bbox: [2528000, 1149000, 2546000, 1162000]
+
+    orthophotos_ortho_spec_fiches_2015_05_29:
+        <<: *layer
+        layers: orthophotos_ortho_spec_fiches_2015_05_29
+        title: Orthophoto Fiches Nord Mai 2015
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2015'
+            # the generated value
+            generate: ['2015']
+            # all the available values in the WMTS capabilities
+            values: ['2015']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2539414, 1154012, 2540138, 1154739]
+    orthophotos_ortho_spec_fiches_2016_06_06:
+        <<: *layer
+        layers: orthophotos_ortho_spec_fiches_2016_06_06
+        title: Orthophoto Fiches Nord Juin 2016
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2016'
+            # the generated value
+            generate: ['2016']
+            # all the available values in the WMTS capabilities
+            values: ['2016']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2539536, 1154223, 2540001, 1154683]
+    orthophotos_ortho_spec_fiches_2016_10_21:
+        <<: *layer
+        layers: orthophotos_ortho_spec_fiches_2016_10_21
+        title: Orthophoto Fiches Nord Octobre 2016
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2016'
+            # the generated value
+            generate: ['2016']
+            # all the available values in the WMTS capabilities
+            values: ['2016']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2539532, 1154218, 2540008, 1154682]
+    orthophotos_ortho_spec_fiches_2018_06_27:
+        <<: *layer
+        layers: orthophotos_ortho_spec_fiches_2018_06_27
+        title: Orthophoto Fiches Nord Juin 2018
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2018'
+            # the generated value
+            generate: ['2018']
+            # all the available values in the WMTS capabilities
+            values: ['2018']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2539519, 1154183, 2540016, 1154683]
+    orthophotos_ortho_spec_fiches_2020_08_18:
+        <<: *layer
+        layers: orthophotos_ortho_spec_fiches_2020_08_18
+        title: Orthophoto Fiches Nord Août 2020
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2020'
+            # the generated value
+            generate: ['2020']
+            # all the available values in the WMTS capabilities
+            values: ['2020']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2539413, 1154011, 2540039, 1154716]
+
+    orthophotos_ortho_spec_quaibelgique_2016:
+        <<: *layer
+        layers: orthophotos_ortho_spec_quaibelgique_2016
+        title: Orthophoto Quai de Belgique Mars 2016
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2016'
+            # the generated value
+            generate: ['2016']
+            # all the available values in the WMTS capabilities
+            values: ['2016']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2537830, 1150684, 2538931, 1151058]
+        #bbox: [2520000, 1143000, 2559000, 1169000] #gc extent + 3km buffer
+
+    orthophotos_ortho_spec_sallaz_2017_02_22:
+        <<: *layer
+        layers: orthophotos_ortho_spec_sallaz_2017_02_22
+        title: Orthophoto la Sallaz 2017
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2017'
+            # the generated value
+            generate: ['2017']
+            # all the available values in the WMTS capabilities
+            values: ['2017']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2539072, 1153474, 2539510, 1154319]
+
+    orthophotos_ortho_spec_sauvabelin_2017_02_22:
+        <<: *layer
+        layers: orthophotos_ortho_spec_sauvabelin_2017_02_22
+        title: Orthophoto Le Signal / Montmeillan Février 2017
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2017'
+            # the generated value
+            generate: ['2017']
+            # all the available values in the WMTS capabilities
+            values: ['2017']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2538367, 1153107, 2538978, 1153804]
+    orthophotos_ortho_spec_sauvabelin_2017_06_13:
+        <<: *layer
+        layers: orthophotos_ortho_spec_sauvabelin_2017_06_13
+        title: Orthophoto Le Signal / Montmeillan Juin 2017
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2017'
+            # the generated value
+            generate: ['2017']
+            # all the available values in the WMTS capabilities
+            values: ['2017']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2538367, 1153107, 2538978, 1153804]
+
+    orthophotos_ortho_spec_step_2016_04_28:
+        <<: *layer
+        layers: orthophotos_ortho_spec_step_2016_04_28
+        title: Orthophoto STEP Avril 2016
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2016'
+            # the generated value
+            generate: ['2016']
+            # all the available values in the WMTS capabilities
+            values: ['2016']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2534760, 1152032, 2535554, 1152697]
+    orthophotos_ortho_spec_step_2017_08_04:
+        <<: *layer
+        layers: orthophotos_ortho_spec_step_2017_08_04
+        title: Orthophoto STEP Août 2017
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2017'
+            # the generated value
+            generate: ['2017']
+            # all the available values in the WMTS capabilities
+            values: ['2017']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2534760, 1152030, 2535554, 1152696]
+    orthophotos_ortho_spec_step_2018_07_02:
+        <<: *layer
+        layers: orthophotos_ortho_spec_step_2018_07_02
+        title: Orthophoto STEP Juillet 2018
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2018'
+            # the generated value
+            generate: ['2018']
+            # all the available values in the WMTS capabilities
+            values: ['2018']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2534760, 1152029, 2535554, 1152696]
+    orthophotos_ortho_spec_step_2019_07_11:
+        <<: *layer
+        layers: orthophotos_ortho_spec_step_2019_07_11
+        title: Orthophoto STEP Juillet 2019
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2534760, 1152029, 2535554, 1152696]
+    orthophotos_ortho_spec_step_2020_08_18:
+        <<: *layer
+        layers: orthophotos_ortho_spec_step_2020_08_18
+        title: Orthophoto STEP Août 2020
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2020'
+            # the generated value
+            generate: ['2020']
+            # all the available values in the WMTS capabilities
+            values: ['2020']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2534760, 1152029, 2535554, 1152696]
+    orthophotos_ortho_spec_step_2021_08_18:
+        <<: *layer
+        layers: orthophotos_ortho_spec_step_2021_08_18
+        title: Orthophoto STEP Août 2021
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2021'
+            # the generated value
+            generate: ['2021']
+            # all the available values in the WMTS capabilities
+            values: ['2021']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2534760, 1152191, 2535314, 1152683]
+    orthophotos_ortho_spec_step_2022_11_30:
+        <<: *layer
+        layers: orthophotos_ortho_spec_step_2022_11_30
+        title: Orthophoto STEP Novembre 2022
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2022'
+            # the generated value
+            generate: ['2022']
+            # all the available values in the WMTS capabilities
+            values: ['2022']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2534760, 1152191, 2535314, 1152683]
+
+    orthophotos_ortho_spec_tuiliere_2016_02_03:
+        <<: *layer
+        layers: orthophotos_ortho_spec_tuiliere_2016_02_03
+        title: Orthophoto Tuilière Février 2016
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2016'
+            # the generated value
+            generate: ['2016']
+            # all the available values in the WMTS capabilities
+            values: ['2016']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536930, 1154710, 2537588, 1155998]
+    orthophotos_ortho_spec_tuiliere_2017_06_08:
+        <<: *layer
+        layers: orthophotos_ortho_spec_tuiliere_2017_06_08
+        title: Orthophoto Tuilière Juin 2017
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2017'
+            # the generated value
+            generate: ['2017']
+            # all the available values in the WMTS capabilities
+            values: ['2017']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2537038, 1154820, 2537516, 1155878]
+    orthophotos_ortho_spec_tuiliere_2018_01_25:
+        <<: *layer
+        layers: orthophotos_ortho_spec_tuiliere_2018_01_25
+        title: Orthophoto Tuilière Janvier 2018
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2017'
+            # the generated value
+            generate: ['2017']
+            # all the available values in the WMTS capabilities
+            values: ['2017']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2537038, 1154820, 2537516, 1155878]
+    orthophotos_ortho_spec_tuiliere_2018_06_20:
+        <<: *layer
+        layers: orthophotos_ortho_spec_tuiliere_2018_06_20
+        title: Orthophoto Tuilière Juin 2018
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2018'
+            # the generated value
+            generate: ['2018']
+            # all the available values in the WMTS capabilities
+            values: ['2018']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2537038, 1154820, 2537516, 1155878]
+    orthophotos_ortho_spec_tuiliere_2019_06_19:
+        <<: *layer
+        layers: orthophotos_ortho_spec_tuiliere_2019_06_19
+        title: Orthophoto Tuilière Juin 2019
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2537038, 1154820, 2537516, 1155878]
+    orthophotos_ortho_spec_tuiliere_2020_07_09:
+        <<: *layer
+        layers: orthophotos_ortho_spec_tuiliere_2020_07_09
+        title: Orthophoto Tuilière Juillet 2020
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2020'
+            # the generated value
+            generate: ['2020']
+            # all the available values in the WMTS capabilities
+            values: ['2020']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2537038, 1154819, 2537516, 1155878]
+    orthophotos_ortho_spec_tuiliere_2021_06_01:
+        <<: *layer
+        layers: orthophotos_ortho_spec_tuiliere_2021_06_01
+        title: Orthophoto Tuilière Juin 2021
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2021'
+            # the generated value
+            generate: ['2021']
+            # all the available values in the WMTS capabilities
+            values: ['2021']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2537037, 1154820, 2537516, 1155879]
+
+    orthophotos_ortho_spec_presdevidy_2016_04_28:
+        <<: *layer
+        layers: orthophotos_ortho_spec_presdevidy_2016_04_28
+        title: Orthophoto Près-de-Vidy Avril 2016
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2016'
+            # the generated value
+            generate: ['2016']
+            # all the available values in the WMTS capabilities
+            values: ['2016']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2534811, 1152381, 2535472, 1152954]
+
+    orthophotos_ortho_spec_fleurettes_2016_06_07:
+        <<: *layer
+        layers: orthophotos_ortho_spec_fleurettes_2016_06_07
+        title: Orthophoto Fleurettes Juin 2016
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2016'
+            # the generated value
+            generate: ['2016']
+            # all the available values in the WMTS capabilities
+            values: ['2016']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536876, 1152006, 2537838, 1152315]
+
+    orthophotos_ortho_spec_garesud_2016_07_15:
+        <<: *layer
+        layers: orthophotos_ortho_spec_garesud_2016_07_15
+        title: Orthophoto Sous-gare Juillet 2016
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2016'
+            # the generated value
+            generate: ['2016']
+            # all the available values in the WMTS capabilities
+            values: ['2016']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2537332, 1151516, 2538327, 1152190]
+
+    orthophotos_ortho_spec_gare_lausanne_2020_02_27:
+        <<: *layer
+        layers: orthophotos_ortho_spec_gare_lausanne_2020_02_27
+        title: Orthophoto Gare Lausanne Février 2020
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2020'
+            # the generated value
+            generate: ['2020']
+            # all the available values in the WMTS capabilities
+            values: ['2020']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536841, 1151770, 2538269, 1152442]
+
+    orthophotos_ortho_spec_croisettes_2017_05_16:
+        <<: *layer
+        layers: orthophotos_ortho_spec_croisettes_2017_05_16
+        title: Orthophoto Croisettes Mai 2017
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2017'
+            # the generated value
+            generate: ['2017']
+            # all the available values in the WMTS capabilities
+            values: ['2017']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2540083, 1154540, 2540465, 1154898]
+    orthophotos_ortho_spec_croisettes_2020_08_21:
+        <<: *layer
+        layers: orthophotos_ortho_spec_croisettes_2020_08_21
+        title: Orthophoto Croisettes Août 2020
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2020'
+            # the generated value
+            generate: ['2020']
+            # all the available values in the WMTS capabilities
+            values: ['2020']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2539977, 1154378, 2540584, 1154863]
+
+    orthophotos_ortho_spec_solitaire_2018_01_23:
+        <<: *layer
+        layers: orthophotos_ortho_spec_solitaire_2018_01_23
+        title: Orthophoto Solitaire Janvier 2018
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2018'
+            # the generated value
+            generate: ['2018']
+            # all the available values in the WMTS capabilities
+            values: ['2018']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536175, 1155483, 2537060, 1156147]
+    orthophotos_ortho_spec_solitaire_2019_01_22:
+        <<: *layer
+        layers: orthophotos_ortho_spec_solitaire_2019_01_22
+        title: Orthophoto Solitaire Janvier 2019
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536175, 1155483, 2537060, 1156147]
+    orthophotos_ortho_spec_solitaire_2020_01_22:
+        <<: *layer
+        layers: orthophotos_ortho_spec_solitaire_2020_01_22
+        title: Orthophoto Solitaire Janvier 2020
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2020'
+            # the generated value
+            generate: ['2020']
+            # all the available values in the WMTS capabilities
+            values: ['2020']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536175, 1155483, 2537060, 1156147]
+    orthophotos_ortho_spec_solitaire_2021_02_04:
+        <<: *layer
+        layers: orthophotos_ortho_spec_solitaire_2021_02_04
+        title: Orthophoto Solitaire Février 2021
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2021'
+            # the generated value
+            generate: ['2021']
+            # all the available values in the WMTS capabilities
+            values: ['2021']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536175, 1155483, 2537060, 1156147]
+    orthophotos_ortho_spec_solitaire_2022_12_20:
+        <<: *layer
+        layers: orthophotos_ortho_spec_solitaire_2022_12_20
+        title: Orthophoto Solitaire Décembre 2022
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2022'
+            # the generated value
+            generate: ['2022']
+            # all the available values in the WMTS capabilities
+            values: ['2022']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536030, 1155483, 2537059, 1156179]         
+    orthophotos_ortho_spec_solitaire_2024_01_25:
+        <<: *layer
+        layers: orthophotos_ortho_spec_solitaire_2024_01_25
+        title: Orthophoto Solitaire Janvier 2024
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2024'
+            # the generated value
+            generate: ['2024']
+            # all the available values in the WMTS capabilities
+            values: ['2024']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536447, 1155596, 2537052, 1156075]        
+
+    orthophotos_ortho_spec_lac_de_bret_2018_04_12:
+        <<: *layer
+        layers: orthophotos_ortho_spec_lac_de_bret_2018_04_12
+        title: Orthophoto Lac de Bret Avril 2018
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2018'
+            # the generated value
+            generate: ['2018']
+            # all the available values in the WMTS capabilities
+            values: ['2018']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2548300, 1150476, 2549685, 1152800]
+
+    orthophotos_ortho_spec_plaine_du_loup_2017_10_07:
+        <<: *layer
+        layers: orthophotos_ortho_spec_plaine_du_loup_2017_10_07
+        title: Orthophoto Plaines-du-Loup Octobre 2017
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2017'
+            # the generated value
+            generate: ['2017']
+            # all the available values in the WMTS capabilities
+            values: ['2017']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536976, 1153617, 2537810, 1154901]
+    orthophotos_ortho_spec_plaine_du_loup_2018_06_27:
+        <<: *layer
+        layers: orthophotos_ortho_spec_plaine_du_loup_2018_06_27
+        title: Orthophoto Plaines-du-Loup Juin 2018
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2018'
+            # the generated value
+            generate: ['2018']
+            # all the available values in the WMTS capabilities
+            values: ['2018']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536976, 1153617, 2537810, 1154901]
+    orthophotos_ortho_spec_plaine_du_loup_2019_01_22:
+        <<: *layer
+        layers: orthophotos_ortho_spec_plaine_du_loup_2019_01_22
+        title: Orthophoto Plaines-du-Loup Janvier 2019
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536976, 1153617, 2537810, 1154901]
+    orthophotos_ortho_spec_plaine_du_loup_2019_06_13:
+        <<: *layer
+        layers: orthophotos_ortho_spec_plaine_du_loup_2019_06_13
+        title: Orthophoto Plaines-du-Loup Juin 2019
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536976, 1153617, 2537810, 1154901]
+    orthophotos_ortho_spec_plaine_du_loup_2020_07_09:
+        <<: *layer
+        layers: orthophotos_ortho_spec_plaine_du_loup_2020_07_09
+        title: Orthophoto Plaines-du-Loup Juillet 2020
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2020'
+            # the generated value
+            generate: ['2020']
+            # all the available values in the WMTS capabilities
+            values: ['2020']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536976, 1153617, 2537810, 1154901]
+    orthophotos_ortho_spec_plaine_du_loup_2021_04_08:
+        <<: *layer
+        layers: orthophotos_ortho_spec_plaine_du_loup_2021_04_08
+        title: Orthophoto Plaines-du-Loup Avril 2021
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2021'
+            # the generated value
+            generate: ['2021']
+            # all the available values in the WMTS capabilities
+            values: ['2021']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536976, 1153617, 2537810, 1154901]
+    orthophotos_ortho_spec_plaine_du_loup_2022_04_11:
+        <<: *layer
+        layers: orthophotos_ortho_spec_plaine_du_loup_2022_04_11
+        title: Orthophoto Plaines-du-Loup Avril 2022
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2022'
+            # the generated value
+            generate: ['2022']
+            # all the available values in the WMTS capabilities
+            values: ['2022']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536976, 1153617, 2537810, 1154901]
+    orthophotos_ortho_spec_plaine_du_loup_2023_04_06:
+        <<: *layer
+        layers: orthophotos_ortho_spec_plaine_du_loup_2023_04_06
+        title: Orthophoto Plaines-du-Loup Avril 2023
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2023'
+            # the generated value
+            generate: ['2023']
+            # all the available values in the WMTS capabilities
+            values: ['2023']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536975, 1154231, 2537506, 1154844]
+    orthophotos_ortho_spec_plaine_du_loup_2023_06_21:
+        <<: *layer
+        layers: orthophotos_ortho_spec_plaine_du_loup_2023_06_21
+        title: Orthophoto Plaines-du-Loup Juin 2023
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2023'
+            # the generated value
+            generate: ['2023']
+            # all the available values in the WMTS capabilities
+            values: ['2023']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536975, 1154230, 2537506, 1154844]
+    orthophotos_ortho_spec_plaine_du_loup_2023_08_25:
+        <<: *layer
+        layers: orthophotos_ortho_spec_plaine_du_loup_2023_08_25
+        title: Orthophoto Plaines-du-Loup Août 2023
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2023'
+            # the generated value
+            generate: ['2023']
+            # all the available values in the WMTS capabilities
+            values: ['2023']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536975, 1154230, 2537506, 1154844]
+
+    orthophotos_ortho_spec_sauvabelin_pavement_2018_06_06:
+        <<: *layer
+        layers: orthophotos_ortho_spec_sauvabelin_pavement_2018_06_06
+        title: Orthophoto Sauvabelin / Pavement Juin 2018
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2018'
+            # the generated value
+            generate: ['2018']
+            # all the available values in the WMTS capabilities
+            values: ['2018']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2538269, 1153740, 2538846, 1154867]
+
+    orthophotos_ortho_spec_chailly_2019_02_28:
+        <<: *layer
+        layers: orthophotos_ortho_spec_chailly_2019_02_28
+        title: Orthophoto Chailly Février 2019
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2539469, 1152455, 2540392, 1153249]
+
+    orthophotos_ortho_spec_saint_sulpice_usine_eau_2019_04_08:
+        <<: *layer
+        layers: orthophotos_ortho_spec_saint_sulpice_usine_eau_2019_04_08
+        title: Orthophoto Saint-Sulpice Avril 2019
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2019'
+            # the generated value
+            generate: ['2019']
+            # all the available values in the WMTS capabilities
+            values: ['2019']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2531506, 1151012, 2531999, 1151605]
+
+    orthophotos_ortho_spec_centreville_2020_05_14:
+        <<: *layer
+        layers: orthophotos_ortho_spec_centreville_2020_05_14
+        title: Orthophoto Centre-ville Mai 2020
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2020'
+            # the generated value
+            generate: ['2020']
+            # all the available values in the WMTS capabilities
+            values: ['2020']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2537296, 1151966, 2538850, 1153275]
+
+    orthophotos_ortho_spec_malley_2020_08_21:
+        <<: *layer
+        layers: orthophotos_ortho_spec_malley_2020_08_21
+        title: Orthophoto Malley Août 2020
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2020'
+            # the generated value
+            generate: ['2020']
+            # all the available values in the WMTS capabilities
+            values: ['2020']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2535631, 1152914, 2535904, 1153210]
+
+    orthophotos_ortho_spec_malley_2021_12_09:
+        <<: *layer
+        layers: orthophotos_ortho_spec_malley_2021_12_09
+        title: Orthophoto Malley Décembre 2021
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2021'
+            # the generated value
+            generate: ['2021']
+            # all the available values in the WMTS capabilities
+            values: ['2021']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2535165, 1152858, 2535898, 1153525]
+
+    orthophotos_ortho_spec_pres_de_vidy_2022_03_09:
+        <<: *layer
+        layers: orthophotos_ortho_spec_pres_de_vidy_2022_03_09
+        title: Orthophoto Près-de-Vidy Mars 2022
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2022'
+            # the generated value
+            generate: ['2022']
+            # all the available values in the WMTS capabilities
+            values: ['2022']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2534748, 1152372, 2535440, 1153153]
+
+    orthophotos_ortho_spec_av_echallens_2022_05_11:
+        <<: *layer
+        layers: orthophotos_ortho_spec_av_echallens_2022_05_11
+        title: Orthophoto Av. d'Echallens Mai 2022
+        dimensions:
+        -   name: DATE
+            # the default value for the WMTS capabilities
+            default: '2022'
+            # the generated value
+            generate: ['2022']
+            # all the available values in the WMTS capabilities
+            values: ['2022']
+        # no buffer needed on raster sources
+        meta_buffer: 0
+        empty_tile_detection:
+            size: 116
+            hash: cddcea030117de8845ebb2a7e98fa2cdad301f13
+        meta: false # disabling metatiles because of issues 176
+        bbox: [2536580, 1152648, 2537623, 1153597]
+
+    testqgis:
+        <<: *layer
+        layers: osm_bdcad_couleur_msgroup,planville_cs_autres_msgroup,planville_cs_bati_pol_sout,planville_od_objets_msgroup,planville_arbres_goeland_msgroup,planville_cs_bati_msgroup,planville_od_labels_msgroup
+        title: Plan ville
+        empty_tile_detection:
+            size: 116
+            hash: 2892fea0a474228f5d66a534b0b5231d923696da
+        bbox: [2535600, 1150600, 2540400, 1155400] #square centre-ville
+
+
+generation:
+    default_cache: local
+    #default_cache: tilesmn95
+
+    # used to allowed only a specific user to generate tiles (for rights issue)
+    # authorised_user: www-data
+
+    # maximum allowed consecutive errors, after it exit [default to 10]
+    maxconsecutive_errors: 10
+
+redis:
+    url: 'redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}'
+
+# Not used if the previous redis section is not commented out
+sqs:
+    # The region where the SQS queue is
+    region: eu-west-1
+    # The SQS queue name, it should already exists
+    queue: '${TILEGENERATION_SQS_QUEUE}'
+
+server:
+    wmts_path: tiles
+    static_path: tiles/static
+    admin_path: tiles/admin
+    expires: 8  # 8 hours
+    predefined_commands:
+    -   name: Generation all layers
+        command: generate_tiles --role=master
+    -   name: Generation layer plan
+        command: generate_tiles --role=master --layer=plan
+    -   name: Generation layer ortho
+        command: generate_tiles --role=master --layer=ortho
+
+process:
+    optipng_test:
+    -   cmd: optipng -o7 -simulate %(in)s
+    optipng:
+    #-   cmd: optipng %(args)s -q -zc9 -zm8 -zs3 -f5 %(in)s
+    -   cmd: optipng %(args)s %(in)s
+        arg:
+            default: '-q'
+            #quiet: '-q'
+            #verbose: '-v'
+            #debug: '-log /tmp/optipng.log'
+    jpegoptim:
+    -   cmd: jpegoptim %(args)s --strip-all --all-normal -m 90 %(in)s
+        arg:
+            default: '-q'
+            quiet: '-q'
+
+openlayers:
+    # srs, center_x, center_y [required]
+    srs: EPSG:2056
+    center_x: 2600000
+    center_y: 1200000
+
+metadata:
+    title: WMTS Lausanne
+    abstract: WMTS de la ville de Lausanne
+    servicetype: OGC WMTS
+    keywords:
+    - Lausanne
+    - WMTS
+    fees: None
+    access_constraints: None
+
+provider:
+    name: Ville de Lausanne
+    url: https://lausanne.ch
+    contact:
+        name: The contact name
+        position: The position name
+        info:
+            phone:
+                voice: +41 11 222 33 44
+                fax: +41 11 222 33 44
+            address:
+                delivery: Address delivery
+                city: Berne
+                area: BE
+                postal_code: 3000
+                country: Switzerland
+                email: info@example.com
