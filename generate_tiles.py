@@ -105,25 +105,46 @@ if __name__ == "__main__":
     if not os.access(geotiff_path, os.R_OK):
         print(f"File {geotiff_path} not readable")
         sys.exit(1)
-    # open the dataset
-    dataset = gdal.Open(geotiff_path, gdal.GA_ReadOnly)
-    # get the projection
-    projection = dataset.GetProjection()
-    print(f"Projection: {projection}")
-    # get the geotransform
-    geotransform = dataset.GetGeoTransform()
-    print(f"GeoTransform: {geotransform}")
-    # get the width and height
-    width = dataset.RasterXSize
-    height = dataset.RasterYSize
-    print(f"Width: {width} pixel, Height: {height}")
+    gdal.UseExceptions()
+    # try to open the dataset
+    try:
+        dataset = gdal.Open(geotiff_path, gdal.GA_ReadOnly)
+        # get the projection
+        projection = dataset.GetProjection()
+        print(f"Projection: {projection}")
+        # get the geotransform
+        geotransform = dataset.GetGeoTransform()
+        print(f"GeoTransform: {geotransform}")
+        # get the top left corner and pixel size and convert to number
+        topLeftImgX = geotransform[0]
+        topLeftImgY = geotransform[3]
+        pixelSizeX = geotransform[1]
+        pixelSizeY = geotransform[5]
+        #check if the geotransform is valid and equal to swiss srid 2056
+        if topLeftImgX < TOP_LEFT_X and topLeftImgY > TOP_LEFT_Y:
+            print(f"Geotransform not valid, expected {topLeftImgX} >= {TOP_LEFT_X}, and {topLeftImgY} <= {TOP_LEFT_Y}")
+            sys.exit(1)
+        # get the width and height
+        width = dataset.RasterXSize
+        height = dataset.RasterYSize
+        print(f"Width: {width} pixel, Height: {height}")
+        #get the bounding box of the image
+        minX = topLeftImgX
+        maxY = topLeftImgY
+        maxX = topLeftImgX + width * pixelSizeX
+        minY = topLeftImgY + height * pixelSizeY
+        print(f"Image bounding box minX,minY,maxX,maxY : {minX}, {minY}, {maxX}, {maxY}")
+    except Exception as e:
+        print(f"Error opening gdal dataset: {e}")
+        sys.exit(1)
+
 
     # for now exit
     sys.exit(0)
     # Generate tiles for zoom levels 0 to 5 and a specific tile range
-    for zoom in range(0, 2):
-        for x in range(0, 2**zoom):
-            for y in range(0, 2**zoom):
-                generate_wmts_tile(GEOTIFF_PATH, zoom, x, y)
+    #for zoom in range(0, 2):
+    #    for x in range(0, 2**zoom):
+    #        for y in range(0, 2**zoom):
+    #            generate_wmts_tile(GEOTIFF_PATH, zoom, x, y)
 
     # Generate GetCapabilities XML
