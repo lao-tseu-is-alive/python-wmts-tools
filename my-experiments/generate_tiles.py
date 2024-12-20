@@ -16,7 +16,7 @@ TOP_LEFT_Y = 1350000
 
 
 # Define the GeoTIFF file path
-GEOTIFF_PATH = "orthophotos/2538000_1152000.tif"  # Replace with your GeoTIFF file path
+GEOTIFF_PATH = "../orthophotos/2538000_1152000.tif"  # Replace with your GeoTIFF file path
 
 # Function to generate a WMTS tile from the GeoTIFF
 def generate_wmts_tile(geotiff_path, zoom, x, y):
