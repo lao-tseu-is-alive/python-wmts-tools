@@ -181,8 +181,6 @@ if __name__ == "__main__":
         logger.error('Unsupported srid %s', srid)
         abort(400, f'Unsupported srid {srid}')
 
-    print(f"grid: {repr(grid)}")
-
     bbox= None
     try:
         bbox = grid.tileBounds(zoom, col, row)
