@@ -2,13 +2,17 @@ import logging as logger
 import sys
 from typing import Any, ClassVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, conlist
 
-from wmts_grids import get_tile_grid
+from app.wmts_grids import get_tile_grid
 
 # Constants
 # based on the OGC standard, which is based on the assumption of a screen resolution of 90.7 DPI (dots per inch).
 WMTS_REF_PIXEL_SIZE_M = 0.00028  # Reference pixel size in meters
+
+
+class BBox(BaseModel):
+    bbox: conlist(float, min_length=4, max_length=4)
 
 
 def get_scale_denominator(cell_size):
@@ -114,7 +118,7 @@ class SwissTopoGrid28(BaseModel):
             return False
         return True
 
-    def get_tile_bbox(self, zoom_level: int, tile_col: int, tile_row: int):
+    def get_tile_bbox(self, zoom_level: int, tile_col: int, tile_row: int) -> BBox | None:
         # Check if tile request is valid
         if self.is_valid_tile(zoom_level, tile_col, tile_row):
             zoom_info = self.resolutions[zoom_level]
@@ -123,7 +127,7 @@ class SwissTopoGrid28(BaseModel):
             y_max = self.top_left_y - tile_row * self.tile_size * resolution
             x_max = x_min + self.tile_size * resolution
             y_min = y_max - self.tile_size * resolution
-            return [x_min, y_min, x_max, y_max]
+            return BBox(bbox=[x_min, y_min, x_max, y_max])
         else:
             # try to find why the tile indices are not valid
             if zoom_level not in self.resolutions:
@@ -226,3 +230,9 @@ if __name__ == "__main__":
     ch_grid = SwissTopoGrid28()
     bbox = ch_grid.get_tile_bbox(zoom, col, row)
     print(f"swiss bbox: {repr(bbox)}")
+
+    print("let's try an invalid request with a zoom of 129")
+    try:
+        bbox = ch_grid.get_tile_bbox(129, col, row)
+    except ValueError as error:
+        print(f"Error: {error}")

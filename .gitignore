@@ -123,7 +123,7 @@ celerybeat.pid
 
 # Environments
 .env
-.venv
+../../.venv
 env/
 venv/
 ENV/
@@ -162,4 +162,4 @@ cython_debug/
 .idea/
 /service-wmts/
 /orthophotos/2538000_1152000.tif
-/wmts_grids/
+/app/wmts_grids/
