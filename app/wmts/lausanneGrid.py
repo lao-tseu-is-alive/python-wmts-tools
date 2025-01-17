@@ -1,25 +1,27 @@
 import sys
 from typing import Any, ClassVar
-from pydantic import BaseModel, conlist
+from pydantic import BaseModel
 from app.wmts.utils import BBox
-from app.wmts_grids import get_tile_grid
 
-class SwissTopoGrid28(BaseModel):
+
+class LausanneGrid(BaseModel):
     """
-    SwissTopoGrid28 class to handle the WMTS Swiss Grid system with 28 level of zoom (from 0 to 27).
-    like the TileMatrixSet 2056_28 from the SwissTopo WMTS service.
-    more info:
-    https://wmts.geo.admin.ch/EPSG/2056/1.0.0/WMTSCapabilities.xml?lang=fr
-    https://www.ech.ch/de/ech/ech-0056/4.0.1
-    https://www.ech.ch/sites/default/files/imce/eCH-Dossier/0031-0060/eCH-0056/4.0.1/Beilagen/eCH-0056-LV95CellSizes-4-0.json
-
+    LausanneGrid class to handle the WMTS Swiss Grid system with 28 level of zoom (from 0 to 27).
+        swissgrid_05:
+        # https://www.ech.ch/dokument/473ea824-bbcd-43fa-ad0a-c7c84edfa1b8
+        #resolutions: [4000, 2000, 1000, 500, 250, 100, 50, 20, 10, 5, 2.5, 1, 0.5, 0.25, 0.1, 0.05] valeurs Y. Jacolin
+        resolutions: [50,20,10,5,2.5,1,0.5,0.25,0.1,0.05]
+        # bbox [required]
+        bbox: [2420000, 1030000, 2900000, 1350000] #valeurs c2c -NE PAS CHANGER, modifier la bbox dans la définition du layer-
+        # srs [required]
+        srs: EPSG:2056
     """
     MINX: ClassVar[float] = 2420000.0  # Minimum X coordinate in LV95 (EPSG:2056)
     MAXX: ClassVar[float] = 2900000.0
     MINY: ClassVar[float] = 1030000.0
     MAXY: ClassVar[float] = 1350000.0
     SpatialREF: ClassVar[int] = 2056  # SwissGrid LV95 (EPSG:2056)
-    TileUrlTemplate: ClassVar[str] = '{zoom}/{tileCol}/{tileRow}'
+    TileUrlTemplate: ClassVar[str] = '{zoom}/{tileRow}/{tileCol}.png'
     UNIT: ClassVar[str] = 'meters'
     MetersPerUnit: ClassVar[int] = 1
     TileSize: ClassVar[int] = 256
@@ -29,36 +31,15 @@ class SwissTopoGrid28(BaseModel):
 
     # Resolution per zoom level in meters per pixel for SwissGrid_05
     resolutions: ClassVar[dict] = {
-        0: {'ScaleDenominator': 14285714.285714287, 'cellSize': 4000.0, 'MatrixWidth': 1.0, 'MatrixHeight': 1.0},
-        1: {'ScaleDenominator': 13392857.142857144, 'cellSize': 3750.0, 'MatrixWidth': 1.0, 'MatrixHeight': 1.0},
-        2: {'ScaleDenominator': 12500000.000000002, 'cellSize': 3500.0, 'MatrixWidth': 1.0, 'MatrixHeight': 1.0},
-        3: {'ScaleDenominator': 11607142.857142858, 'cellSize': 3250.0, 'MatrixWidth': 1.0, 'MatrixHeight': 1.0},
-        4: {'ScaleDenominator': 10714285.714285715, 'cellSize': 3000.0, 'MatrixWidth': 1.0, 'MatrixHeight': 1.0},
-        5: {'ScaleDenominator': 9821428.571428573, 'cellSize': 2750.0, 'MatrixWidth': 1.0, 'MatrixHeight': 1.0},
-        6: {'ScaleDenominator': 8928571.42857143, 'cellSize': 2500.0, 'MatrixWidth': 1.0, 'MatrixHeight': 1.0},
-        7: {'ScaleDenominator': 8035714.285714286, 'cellSize': 2250.0, 'MatrixWidth': 1.0, 'MatrixHeight': 1.0},
-        8: {'ScaleDenominator': 7142857.142857144, 'cellSize': 2000.0, 'MatrixWidth': 1.0, 'MatrixHeight': 1.0},
-        9: {'ScaleDenominator': 6250000.000000001, 'cellSize': 1750.0, 'MatrixWidth': 2.0, 'MatrixHeight': 1.0},
-        10: {'ScaleDenominator': 5357142.857142857, 'cellSize': 1500.0, 'MatrixWidth': 2.0, 'MatrixHeight': 1.0},
-        11: {'ScaleDenominator': 4464285.714285715, 'cellSize': 1250.0, 'MatrixWidth': 2.0, 'MatrixHeight': 1.0},
-        12: {'ScaleDenominator': 3571428.571428572, 'cellSize': 1000.0, 'MatrixWidth': 2.0, 'MatrixHeight': 2.0},
-        13: {'ScaleDenominator': 2678571.4285714286, 'cellSize': 750.0, 'MatrixWidth': 3.0, 'MatrixHeight': 2.0},
-        14: {'ScaleDenominator': 2321428.571428572, 'cellSize': 650.0, 'MatrixWidth': 3.0, 'MatrixHeight': 2.0},
-        15: {'ScaleDenominator': 1785714.285714286, 'cellSize': 500.0, 'MatrixWidth': 4.0, 'MatrixHeight': 3.0},
-        16: {'ScaleDenominator': 892857.142857143, 'cellSize': 250.0, 'MatrixWidth': 8.0, 'MatrixHeight': 5.0},
-        17: {'ScaleDenominator': 357142.85714285716, 'cellSize': 100.0, 'MatrixWidth': 19.0, 'MatrixHeight': 13.0},
-        18: {'ScaleDenominator': 178571.42857142858, 'cellSize': 50.0, 'MatrixWidth': 38.0, 'MatrixHeight': 25.0},
-        19: {'ScaleDenominator': 71428.57142857143, 'cellSize': 20.0, 'MatrixWidth': 94.0, 'MatrixHeight': 63.0},
-        20: {'ScaleDenominator': 35714.28571428572, 'cellSize': 10.0, 'MatrixWidth': 188.0, 'MatrixHeight': 125.0},
-        21: {'ScaleDenominator': 17857.14285714286, 'cellSize': 5.0, 'MatrixWidth': 375.0, 'MatrixHeight': 250.0},
-        22: {'ScaleDenominator': 8928.57142857143, 'cellSize': 2.5, 'MatrixWidth': 750.0, 'MatrixHeight': 500.0},
-        23: {'ScaleDenominator': 7142.857142857143, 'cellSize': 2.0, 'MatrixWidth': 938.0, 'MatrixHeight': 625.0},
-        24: {'ScaleDenominator': 5357.142857142858, 'cellSize': 1.5, 'MatrixWidth': 1250.0, 'MatrixHeight': 834.0},
-        25: {'ScaleDenominator': 3571.4285714285716, 'cellSize': 1.0, 'MatrixWidth': 1875.0, 'MatrixHeight': 1250.0},
-        26: {'ScaleDenominator': 1785.7142857142858, 'cellSize': 0.5, 'MatrixWidth': 3750.0, 'MatrixHeight': 2500.0},
-        27: {'ScaleDenominator': 892.8571428571429, 'cellSize': 0.25, 'MatrixWidth': 7500.0, 'MatrixHeight': 5000.0},
-        28: {'ScaleDenominator': 357.14285714285717, 'cellSize': 0.09999999999999999, 'MatrixWidth': 18750.0,
-             'MatrixHeight': 12500.0}}
+        0: {'ScaleDenominator': 178571.42857142858, 'cellSize': 50.0, 'MatrixWidth': 38.0, 'MatrixHeight': 25.0},
+        1: {'ScaleDenominator': 71428.57142857143, 'cellSize': 20.0, 'MatrixWidth': 94.0, 'MatrixHeight': 63.0},
+        2: {'ScaleDenominator': 35714.28571428572, 'cellSize': 10.0, 'MatrixWidth': 188.0, 'MatrixHeight': 125.0},
+        3: {'ScaleDenominator': 17857.14285714286, 'cellSize': 5.0, 'MatrixWidth': 375.0, 'MatrixHeight': 250.0},
+        4: {'ScaleDenominator': 8928.57142857143, 'cellSize': 2.5, 'MatrixWidth': 750.0, 'MatrixHeight': 500.0},
+        5: {'ScaleDenominator': 3571.4285714285716, 'cellSize': 1.0, 'MatrixWidth': 1875.0, 'MatrixHeight': 1250.0},
+        6: {'ScaleDenominator': 1785.7142857142858, 'cellSize': 0.5, 'MatrixWidth': 3750.0, 'MatrixHeight': 2500.0},
+        7: {'ScaleDenominator': 892.8571428571429, 'cellSize': 0.25, 'MatrixWidth': 7500.0, 'MatrixHeight': 5000.0},
+        8: {'ScaleDenominator': 357.14285714285717, 'cellSize': 0.1, 'MatrixWidth': 18750.0,'MatrixHeight': 12500.0}}
 
     def __init__(self, /, **data: Any):
         super().__init__(**data)
@@ -184,31 +165,27 @@ if __name__ == "__main__":
     # Example usage
     coordinate_x = 2538817  # X coordinate (SwissGrid LV95)
     coordinate_y = 1163422  # Y coordinate (SwissGrid LV95)
-    col = 4570  # Row index
-    row = 7650  # Column index
-    zoom = 28  # Zoom level (1, 2, 3, or 4)
+    col = 1838  # Row index
+    row = 3083  # Column index
+    zoom = 7  # Zoom level (1, 2, 3, or 4)
     srid = 2056  # SwissGrid LV95 (EPSG:2056)
-    grid = None
-    try:
-        grid = get_tile_grid(srid)()
-    except AssertionError as error:
-        print('Unsupported srid %s: %s', srid, error)
-        abort(400, f'Unsupported srid {srid}')
-    if grid is None:
-        print('Unsupported srid %s', srid)
-        abort(400, f'Unsupported srid {srid}')
+    tilesMn95Template=f"https://tilesmn95.lausanne.ch/tiles/1.0.0/fonds_geo_osm_bdcad_couleur/default/2021/swissgrid_05/{zoom}/{row}/{col}.png"
+    fonds_geo_osm_bdcad_couleur_layers = "osm_bdcad_couleur_msgroup,planville_cs_autres_msgroup,planville_cs_bati_pol_sout,planville_marquage_msgroup,planville_od_objets_msgroup,planville_arbres_goeland_msgroup,planville_cs_bati_msgroup,planville_od_labels_msgroup"
 
-    bbox = None
-    try:
-        bbox = grid.tileBounds(zoom, col, row)
-    except AssertionError as error:
-        print(f'Unsupported zoom level {zoom} for srid {srid}: {error}')
-        abort(400, f'Unsupported zoom level {zoom} for srid {srid}')
     print(f"bbox for a tile at zoom: {zoom}, col: {col}, row: {row} ")
-    print(f"swiss bbox: {repr(bbox)}")
-    ch_grid = SwissTopoGrid28()
+    ch_grid = LausanneGrid()
     bbox = ch_grid.get_tile_bbox(zoom, col, row)
     print(f"swiss bbox: {repr(bbox)}")
+    bbox_str = ','.join([str(b) for b in bbox.bbox])
+    print (f"bbox string: {bbox}")
+    wms_request=(f"https://carto.lausanne.ch/mapserv_proxy?ogcserver=source+for+image%2Fpng&SERVICE=WMS&" +
+                 f"VERSION=1.3.0&REQUEST=GetMap&FORMAT=image%2Fpng&TRANSPARENT=true&" +
+                 f"LAYERS={fonds_geo_osm_bdcad_couleur_layers}&SERVERTYPE=mapserver&STYLES=&CRS=EPSG%3A2056&" +
+                 f"WIDTH=256&HEIGHT=256&" +
+                 f"BBOX=" + bbox_str)
+    print(f"wms_request:\n {wms_request}")
+    print(tilesMn95Template)
+
 
     print("let's try an invalid request with a zoom of 129")
     try:
