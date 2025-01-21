@@ -1,0 +1,32 @@
+@import "node_modules/ol/ol.css";
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+}
+
+.header {
+    position: relative;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 1em;
+    max-height: 2rem;
+    display: block;
+}
+.logo {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 auto;
+    display: block;
+}
+
+#map {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    height: 500px;
+    min-width: 500px;
+    min-height: 500px;
+}
