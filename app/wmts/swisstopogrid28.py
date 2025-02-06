@@ -1,3 +1,4 @@
+import logging
 import sys
 from typing import Any, ClassVar
 from pydantic import BaseModel, conlist
@@ -67,8 +68,9 @@ class SwissTopoGrid28(BaseModel):
         # Check if zoom level is supported
         if zoom_level not in self.resolutions:
             raise ValueError("Unsupported zoom level. Please choose between 1 and 4.")
-
-        resolution = self.resolutions[zoom_level]
+        zoom_info = self.resolutions[zoom_level]
+        resolution = zoom_info['cellSize']
+        #resolution = self.resolutions[zoom_level]
 
         # Calculate the tile indices (x, y)
         tile_x = int((coord_x - self.top_left_x) / (self.tile_size * resolution))

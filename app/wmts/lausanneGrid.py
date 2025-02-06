@@ -49,13 +49,17 @@ class LausanneGrid(BaseModel):
         if zoom_level not in self.resolutions:
             raise ValueError("Unsupported zoom level. Please choose between 1 and 4.")
 
-        resolution = self.resolutions[zoom_level]
+        # Get the resolution for the zoom level
+        zoom_info = self.resolutions[zoom_level]
+        resolution = zoom_info['cellSize']
+        print(f"resolution: {resolution}")
+        #resolution = self.resolutions[zoom_level]
 
         # Calculate the tile indices (x, y)
-        tile_x = int((coord_x - self.top_left_x) / (self.tile_size * resolution))
-        tile_y = int((self.top_left_y - coord_y) / (self.tile_size * resolution))
+        tile_col = int((coord_x - self.top_left_x) / (self.tile_size * resolution))
+        tile_row = int((self.top_left_y - coord_y) / (self.tile_size * resolution))
 
-        return tile_x, tile_y
+        return tile_col, tile_row
 
     def max_zoom(self):
         return max(self.resolutions.keys())
@@ -105,6 +109,20 @@ class LausanneGrid(BaseModel):
         return: Tuple of (x_min, y_min, x_max, y_max)
         """
         return [self.MINX, self.MINY, self.MAXX, self.MAXY]
+
+    def get_tile_width(self):
+        """
+        Get the width of the tile in meters.
+        return: Width of the tile in meters.
+        """
+        return self.tile_size * self.MetersPerUnit
+
+    def get_tile_height(self):
+        """
+        Get the height of the tile in meters.
+        return: Height of the tile in meters.
+        """
+        return self.tile_size * self.MetersPerUnit
 
     def get_height(self):
         """
