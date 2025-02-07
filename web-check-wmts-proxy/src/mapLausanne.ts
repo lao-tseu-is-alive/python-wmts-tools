@@ -1,8 +1,8 @@
 /**
- * Map.ts
- * Created by CGil on 2023-10-23.
- * allow to display an OpenLayers Map in Lausanne Switzerland
- * and handle various interactions
+ * MapLausanne.ts
+ * Created by CGil on 2025-02-15.
+ * some functions to allow display an OpenLayers Map in Lausanne Switzerland
+ * and handle some interactions with this map
  */
 import proj4 from "proj4";
 import OlMap from "ol/Map";
@@ -38,7 +38,7 @@ const SwissMaxExtent = [2420000, 1030000, 2900000, 1350000];
 const lausanneGare: Coordinate2D = [2537968.5, 1152088.0];
 export type Coordinate2D = [number, number]
 export type BBox = [number, number, number, number]
-export type baseLayerType = "orthophotos_ortho_lidar_2016" | "fonds_geo_osm_bdcad_gris" | "fonds_geo_osm_bdcad_couleur";
+export type baseLayerType = "orthophotos_ortho_lidar_2024" | "orthophotos_ortho_lidar_2016" | "fonds_geo_osm_bdcad_gris" | "fonds_geo_osm_bdcad_couleur";
 
 const defaultBaseLayer:baseLayerType = "fonds_geo_osm_bdcad_couleur";
 
@@ -126,6 +126,15 @@ async function getWmtsBaseLayers(url: string, initialBaseLayer: string) {
         initialBaseLayer === "orthophotos_ortho_lidar_2016",
       ),
     );
+    arrWmtsLayers.push(
+        createBaseOlLayerTile(
+            WMTSCapabilitiesParsed,
+            "Orthophoto 2024 (Lausanne)",
+            "orthophotos_ortho_lidar_2024",
+            initialBaseLayer === "orthophotos_ortho_lidar_2024",
+        ),
+    );
+
     arrWmtsLayers.push(
       createBaseOlLayerTile(
         WMTSCapabilitiesParsed,
@@ -273,38 +282,55 @@ const getPointStyleLocal = (_feature: OlFeature) => {
   return style;
 };
 
-const getPolygonWithVerticesStyle = () => {
+interface PolygonWithVerticesStyleOptions {
+  strokeColor?: string;
+  strokeWidth?: number;
+  fillColor?: string;
+  vertexFillColor?: string;
+  vertexRadius?: number;
+}
+
+const defaultPolygonWithVerticesStyleOptions: PolygonWithVerticesStyleOptions = {
+  strokeColor: 'black',
+  strokeWidth: 2,
+  fillColor: 'rgba(0, 0, 255, 0.1)',
+  vertexFillColor: 'yellow',
+  vertexRadius: 3,
+};
+
+const getPolygonWithVerticesStyle = (options:PolygonWithVerticesStyleOptions) => {
+  const mergedOptions: PolygonWithVerticesStyleOptions = { ...defaultPolygonWithVerticesStyleOptions, ...options };
+
   return [
-    /* We are using two different styles for the polygons:
-     *  - The first style is for the polygons themselves.
-     *  - The second style is to draw the vertices of the polygons.
-     *    In a custom `geometry` function the vertices of a polygon are
-     *    returned as `MultiPoint` geometry, which will be used to render
-     *    the style.
-     */
     new OlStyle({
       stroke: new OlStroke({
-        color: 'blue',
-        width: 3,
+        color: mergedOptions.strokeColor,
+        width: mergedOptions.strokeWidth,
       }),
       fill: new OlFill({
-        color: 'rgba(0, 0, 255, 0.1)',
+        color: mergedOptions.fillColor,
       }),
     }),
     new OlStyle({
       image: new OlCircle({
-        radius: 5,
+        // @ts-ignore
+        radius: mergedOptions.vertexRadius,
         fill: new OlFill({
-          color: 'orange',
+          color: mergedOptions.vertexFillColor,
         }),
       }),
       geometry: function (feature) {
-        // return the coordinates of the first ring of the polygon
         if (feature && feature.getGeometry()) {
-          // @ts-ignore
-          const coordinates = feature.getGeometry().getCoordinates()[0];
-          return new OlMultiPoint(coordinates);
+          try {
+            // @ts-ignore  (TS often has issues with OpenLayers geometry types)
+            const coordinates = feature.getGeometry().getCoordinates()[0];
+            return new OlMultiPoint(coordinates);
+          } catch (error) {
+            console.error("Error getting geometry coordinates:", error);
+            return undefined; // Or some other fallback geometry
+          }
         }
+        return undefined; // Return undefined if no geometry.  Handles null/undefined gracefully.
       },
     }),
   ];
@@ -352,7 +378,7 @@ export const drawBBox = (olMap: OlMap, layerName: string, bbox: BBox) => {
     const polygonFeature = new OlFeature({
       geometry: new OlPolygon([rectCoordinates]),
     });
-    polygonFeature.setStyle(getPolygonWithVerticesStyle());
+    polygonFeature.setStyle(getPolygonWithVerticesStyle(defaultPolygonWithVerticesStyleOptions));
     vectorSource.clear();
     vectorSource.addFeature(polygonFeature);
   }
