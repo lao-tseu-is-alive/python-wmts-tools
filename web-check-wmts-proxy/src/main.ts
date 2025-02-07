@@ -3,7 +3,7 @@ import './css/skeleton.css'
 import './css/style.css'
 import logo from '/logo.svg'
 import {APP, APP_URL, BACKEND_URL, BUILD_DATE, defaultAxiosTimeout, getLog, VERSION} from "./config";
-import {baseLayerType, Coordinate2D, createLausanneMap} from "./mapLausanne.ts";
+import {baseLayerType, Coordinate2D, createLausanneMap, drawBBox, redrawMarker} from "./mapLausanne.ts";
 import OlMap from "ol/Map";
 import axios from "axios";
 
@@ -13,6 +13,7 @@ const defaultZoom = 6
 const posCenterX = 2538202;
 const posCenterY = 1152364;
 const myPointLayerName = "GoelandPointLayer";
+const myBBoxLayerName = "GoelandBBoxLayer";
 const defaultBaseLayer:baseLayerType = "fonds_geo_osm_bdcad_couleur";
 const getBaseTileUrl="https://tilesmn95.lausanne.ch/tiles/1.0.0"
 const getTileUrl = (layer:baseLayerType, z:number,row:number,col:number) =>`/${layer}/default/2021/swissgrid_05/${z}/${row}/${col}.png`
@@ -159,6 +160,7 @@ try {
                 myOlMap.getView().setCenter([x, y]);
                 const currentZoom = Number(inputZoom.value)
                 const baseLayer = inputBaseLayer.value as baseLayerType;
+                redrawMarker(myOlMap,myPointLayerName, [x, y]);
                 const res = await getTileByXY(currentZoom, x, y);
                 log.l(`getTileByXY response:`, res);
                 if (res !== null) {
@@ -169,6 +171,7 @@ try {
                     tileInfoUrl.innerHTML = `${tileUrl}`;
                     wmsImage.innerHTML = `<img src="${res.wms_url}" alt="wms image"/>`;
                     wmsInfoUrl.innerHTML = `WMS bbox:${res.bbox}`;
+                    drawBBox(myOlMap, myBBoxLayerName, res.bbox);
                 }
 
             });

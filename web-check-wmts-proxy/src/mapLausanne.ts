@@ -9,6 +9,8 @@ import OlMap from "ol/Map";
 import OlView from "ol/View";
 import OlFeature from "ol/Feature";
 import OlPoint from "ol/geom/Point";
+import OlPolygon from "ol/geom/Polygon";
+import OlMultiPoint from "ol/geom/MultiPoint";
 import OlProjection from "ol/proj/Projection";
 import OlLayer from "ol/layer/Layer";
 import OlLayerTile from "ol/layer/Tile";
@@ -35,6 +37,7 @@ const LausanneMaxExtent = [2532500, 1149000, 2545625, 1161000];
 const SwissMaxExtent = [2420000, 1030000, 2900000, 1350000];
 const lausanneGare: Coordinate2D = [2537968.5, 1152088.0];
 export type Coordinate2D = [number, number]
+export type BBox = [number, number, number, number]
 export type baseLayerType = "orthophotos_ortho_lidar_2016" | "fonds_geo_osm_bdcad_gris" | "fonds_geo_osm_bdcad_couleur";
 
 const defaultBaseLayer:baseLayerType = "fonds_geo_osm_bdcad_couleur";
@@ -270,6 +273,43 @@ const getPointStyleLocal = (_feature: OlFeature) => {
   return style;
 };
 
+const getPolygonWithVerticesStyle = () => {
+  return [
+    /* We are using two different styles for the polygons:
+     *  - The first style is for the polygons themselves.
+     *  - The second style is to draw the vertices of the polygons.
+     *    In a custom `geometry` function the vertices of a polygon are
+     *    returned as `MultiPoint` geometry, which will be used to render
+     *    the style.
+     */
+    new OlStyle({
+      stroke: new OlStroke({
+        color: 'blue',
+        width: 3,
+      }),
+      fill: new OlFill({
+        color: 'rgba(0, 0, 255, 0.1)',
+      }),
+    }),
+    new OlStyle({
+      image: new OlCircle({
+        radius: 5,
+        fill: new OlFill({
+          color: 'orange',
+        }),
+      }),
+      geometry: function (feature) {
+        // return the coordinates of the first ring of the polygon
+        if (feature && feature.getGeometry()) {
+          // @ts-ignore
+          const coordinates = feature.getGeometry().getCoordinates()[0];
+          return new OlMultiPoint(coordinates);
+        }
+      },
+    }),
+  ];
+}
+
 export const redrawMarker = (olMap: OlMap, layerName: string, center: Coordinate2D) => {
   log.t(`In redrawMarker layerName: ${layerName} center: [${center[0]}, ${center[1]}]`);
   const olLayer = getLayerByName(olMap, layerName);
@@ -287,6 +327,37 @@ export const redrawMarker = (olMap: OlMap, layerName: string, center: Coordinate
     log.w(`In redrawMarker layer ${layerName} not found`);
   }
 };
+
+export const drawBBox = (olMap: OlMap, layerName: string, bbox: BBox) => {
+  log.t(`In drawBBox layerName: ${layerName} bbox: [${bbox[0]}, ${bbox[1]}, ${bbox[2]}, ${bbox[3]}]`);
+  const [x_min, y_min, x_max, y_max] = bbox;
+  const rectCoordinates = [
+    [x_min, y_min], // Bottom-left
+    [x_max, y_min], // Bottom-right
+    [x_max, y_max], // Top-right
+    [x_min, y_max], // Top-left
+    [x_min, y_min]  // Close the polygon
+  ];
+  let olLayer = getLayerByName(olMap, layerName);
+  if (olLayer == null) {
+    log.w(`In drawBBox layer ${layerName} not found, will create it`);
+    olLayer = new OlLayerVector({
+      source: new VectorSource(),
+    });
+    olLayer.setProperties({ title: layerName, name: layerName });
+    olMap.addLayer(olLayer);
+  }
+  const vectorSource = olLayer.getSource() as OlSourceVector;
+  if (vectorSource !== null) {
+    const polygonFeature = new OlFeature({
+      geometry: new OlPolygon([rectCoordinates]),
+    });
+    polygonFeature.setStyle(getPolygonWithVerticesStyle());
+    vectorSource.clear();
+    vectorSource.addFeature(polygonFeature);
+  }
+};
+
 
 export const getPolygonStyle = (feature: OlFeature, resolution: number) => {
   const options = {
