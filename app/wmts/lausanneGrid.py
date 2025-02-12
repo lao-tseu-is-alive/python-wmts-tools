@@ -39,7 +39,10 @@ class LausanneGrid(BaseModel):
         5: {'ScaleDenominator': 3571.4285714285716, 'cellSize': 1.0, 'MatrixWidth': 1875.0, 'MatrixHeight': 1250.0},
         6: {'ScaleDenominator': 1785.7142857142858, 'cellSize': 0.5, 'MatrixWidth': 3750.0, 'MatrixHeight': 2500.0},
         7: {'ScaleDenominator': 892.8571428571429, 'cellSize': 0.25, 'MatrixWidth': 7500.0, 'MatrixHeight': 5000.0},
-        8: {'ScaleDenominator': 357.14285714285717, 'cellSize': 0.1, 'MatrixWidth': 18750.0,'MatrixHeight': 12500.0}}
+        8: {'ScaleDenominator': 357.14285714285717, 'cellSize': 0.1, 'MatrixWidth': 18750.0,'MatrixHeight': 12500.0},
+        9: {'ScaleDenominator': 178.57142857142858, 'cellSize': 0.05, 'MatrixWidth': 37500.0,'MatrixHeight': 25000.0}
+    }
+
 
     def __init__(self, /, **data: Any):
         super().__init__(**data)
@@ -52,7 +55,7 @@ class LausanneGrid(BaseModel):
         # Get the resolution for the zoom level
         zoom_info = self.resolutions[zoom_level]
         resolution = zoom_info['cellSize']
-        print(f"resolution: {resolution}")
+        #print(f"resolution: {resolution}")
         #resolution = self.resolutions[zoom_level]
 
         # Calculate the tile indices (x, y)
@@ -63,6 +66,11 @@ class LausanneGrid(BaseModel):
 
     def max_zoom(self):
         return max(self.resolutions.keys())
+
+    def min_zoom(self):
+        return min(self.resolutions.keys())
+
+
 
     def is_valid_tile(self, zoom_level: int, tile_col: int, tile_row: int):
         """

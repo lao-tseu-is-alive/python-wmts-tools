@@ -282,7 +282,7 @@ const getPointStyleLocal = (_feature: OlFeature) => {
   return style;
 };
 
-interface PolygonWithVerticesStyleOptions {
+export interface PolygonWithVerticesStyleOptions {
   strokeColor?: string;
   strokeWidth?: number;
   fillColor?: string;
@@ -354,7 +354,14 @@ export const redrawMarker = (olMap: OlMap, layerName: string, center: Coordinate
   }
 };
 
-export const drawBBox = (olMap: OlMap, layerName: string, bbox: BBox) => {
+export const drawBBox = (
+    olMap: OlMap,
+    layerName: string,
+    bbox: BBox,
+    clearLayer:boolean=true,
+    styleOptions:PolygonWithVerticesStyleOptions=defaultPolygonWithVerticesStyleOptions
+) => {
+  const mergedOptions: PolygonWithVerticesStyleOptions = { ...defaultPolygonWithVerticesStyleOptions, ...styleOptions };
   log.t(`In drawBBox layerName: ${layerName} bbox: [${bbox[0]}, ${bbox[1]}, ${bbox[2]}, ${bbox[3]}]`);
   const [x_min, y_min, x_max, y_max] = bbox;
   const rectCoordinates = [
@@ -378,8 +385,10 @@ export const drawBBox = (olMap: OlMap, layerName: string, bbox: BBox) => {
     const polygonFeature = new OlFeature({
       geometry: new OlPolygon([rectCoordinates]),
     });
-    polygonFeature.setStyle(getPolygonWithVerticesStyle(defaultPolygonWithVerticesStyleOptions));
-    vectorSource.clear();
+    polygonFeature.setStyle(getPolygonWithVerticesStyle(mergedOptions));
+    if (clearLayer) {
+      vectorSource.clear();
+    }
     vectorSource.addFeature(polygonFeature);
   }
 };

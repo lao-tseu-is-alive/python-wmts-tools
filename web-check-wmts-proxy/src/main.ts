@@ -3,8 +3,14 @@ import './css/skeleton.css'
 import './css/style.css'
 import logo from '/logo.svg'
 import {APP, APP_URL, BACKEND_URL, BUILD_DATE, defaultAxiosTimeout, getLog, VERSION} from "./config";
-import {baseLayerType, Coordinate2D, createLausanneMap, drawBBox, redrawMarker} from "./mapLausanne.ts";
-import OlMap from "ol/Map";
+import {
+    baseLayerType,
+    Coordinate2D,
+    createLausanneMap,
+    drawBBox,
+    PolygonWithVerticesStyleOptions,
+    redrawMarker
+} from "./mapLausanne.ts";
 import axios from "axios";
 
 const log = getLog(APP, 4, 2);
@@ -14,16 +20,16 @@ const posCenterX = 2538202;
 const posCenterY = 1152364;
 const myPointLayerName = "GoelandPointLayer";
 const myBBoxLayerName = "GoelandBBoxLayer";
-const defaultBaseLayer:baseLayerType = "fonds_geo_osm_bdcad_couleur";
-const getBaseTileUrl="https://tilesmn95.lausanne.ch/tiles/1.0.0"
-const getTileUrl = (layer:baseLayerType, z:number,row:number,col:number) =>`/${layer}/default/2021/swissgrid_05/${z}/${row}/${col}.png`
+const defaultBaseLayer: baseLayerType = "fonds_geo_osm_bdcad_couleur";
+const getBaseTileUrl = "https://tilesmn95.lausanne.ch/tiles/1.0.0"
+const getTileUrl = (layer: baseLayerType, z: number, row: number, col: number) => `/${layer}/default/2021/swissgrid_05/${z}/${row}/${col}.png`
 
 interface tileInfo {
-    "zoom":number,
-    "col":number,
-    "row":number,
-    "wms_url":string,
-    "bbox": [number, number,number, number],
+    "zoom": number,
+    "col": number,
+    "row": number,
+    "wms_url": string,
+    "bbox": [number, number, number, number],
 }
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -119,7 +125,7 @@ const wmsImage = document.querySelector<HTMLDivElement>('#wms-image')!;
 const wmsInfoUrl = document.querySelector<HTMLDivElement>('#wms-url')!;
 
 
-const getTileByXY = async (z:number, x:number, y:number):Promise<tileInfo|null> => {
+const getTileByXY = async (z: number, x: number, y: number): Promise<tileInfo | null> => {
     const url = `${BACKEND_URL}/getTileByXY/${z}/${x}/${y}`;
     log.l(`getTileByXY url:${url}`);
     try {
@@ -146,50 +152,67 @@ try {
         log.l(`✅ map createLausanneMap returned a valid map`);
         myOlMap.getView().setCenter(placeStFrancoisM95);
         myOlMap.getView().setZoom(defaultZoom);
-        }
-        if (myOlMap instanceof OlMap) {
-            myOlMap.on("click", async (evt) => {
-                log.t(`map click event`, evt);
-                const x = +Number(evt.coordinate[0]).toFixed(2);
-                const y = +Number(evt.coordinate[1]).toFixed(2);
-                const msg = `map click at [${x},${y}]`;
-                log.l(msg);
-                debugMsg.value = `map click at [${x},${y}]`;
-                inputX.value = x.toString();
-                inputY.value = y.toString();
-                myOlMap.getView().setCenter([x, y]);
-                const currentZoom = Number(inputZoom.value)
-                const baseLayer = inputBaseLayer.value as baseLayerType;
-                redrawMarker(myOlMap,myPointLayerName, [x, y]);
-                const res = await getTileByXY(currentZoom, x, y);
-                log.l(`getTileByXY response:`, res);
-                if (res !== null) {
-                    const tileUrl= getTileUrl(baseLayer, res.zoom, res.row, res.col)
-                    const tileSrc= `${getBaseTileUrl}${tileUrl}`;
-                    debugMsg.value = `map click at [${x},${y}]\n tileSrc:${tileSrc},\n wms_url:${res.wms_url}`;
-                    tileImage.innerHTML = `<img src="${tileSrc}" alt="tile image"/>`;
-                    tileInfoUrl.innerHTML = `${tileUrl}`;
-                    wmsImage.innerHTML = `<img src="${res.wms_url}" alt="wms image"/>`;
-                    wmsInfoUrl.innerHTML = `WMS bbox:${res.bbox}`;
-                    drawBBox(myOlMap, myBBoxLayerName, res.bbox);
-                }
+        const imgBBox=[2537000.0,1152000.025,2537999.975,1153000.0];
+        const imgBBoxPolygonWithVerticesStyleOptions: PolygonWithVerticesStyleOptions = {
+            strokeColor: 'blue',
+            strokeWidth: 2,
+            fillColor: 'rgba(255, 0, 0, 0.1)',
+            vertexFillColor: 'yellow',
+            vertexRadius: 3,
+        };
 
-            });
-            myOlMap.on("moveend", () => {
-                log.t(`map moveend event`);
-                const newCenter = myOlMap.getView().getCenter() || placeStFrancoisM95;
-                const realZoom = myOlMap.getView().getZoom()           || defaultZoom;
-                log.l(`real zoom: ${realZoom}`);
-                const newZoom = Math.round(realZoom);
-                inputX.value = newCenter[0].toFixed(2);
-                inputY.value = newCenter[1].toFixed(2);
-                myOlMap.getView().setZoom(newZoom);
-                inputZoom.value = newZoom.toString();
-                const msg=`map view changed to [${newCenter[0].toFixed(2)},${newCenter[1].toFixed(2)}] zoom:${newZoom}`;
-                log.l(msg);
-                debugMsg.value = msg;
-            });
-        }
+        drawBBox(myOlMap, myBBoxLayerName, imgBBox as [number, number, number, number], false, imgBBoxPolygonWithVerticesStyleOptions);
+        const tileGridBBox=[2532640.0,1145200.0,2548000.0,1158000.0];
+        const tileGridBBoxPolygonWithVerticesStyleOptions: PolygonWithVerticesStyleOptions = {
+            strokeColor: 'black',
+            strokeWidth: 2,
+            fillColor: 'rgba(0, 0, 0, 0.7)',
+            vertexFillColor: 'yellow',
+            vertexRadius: 3,
+        };
+        drawBBox(myOlMap, myBBoxLayerName, tileGridBBox as [number, number, number, number], false, tileGridBBoxPolygonWithVerticesStyleOptions);
+        myOlMap.on("click", async (evt) => {
+            log.t(`map click event`, evt);
+            const x = +Number(evt.coordinate[0]).toFixed(2);
+            const y = +Number(evt.coordinate[1]).toFixed(2);
+            const msg = `map click at [${x},${y}]`;
+            log.l(msg);
+            debugMsg.value = `map click at [${x},${y}]`;
+            inputX.value = x.toString();
+            inputY.value = y.toString();
+            myOlMap.getView().setCenter([x, y]);
+            const currentZoom = Number(inputZoom.value)
+            const baseLayer = inputBaseLayer.value as baseLayerType;
+            redrawMarker(myOlMap, myPointLayerName, [x, y]);
+            const res = await getTileByXY(currentZoom, x, y);
+            log.l(`getTileByXY response:`, res);
+            if (res !== null) {
+                const tileUrl = getTileUrl(baseLayer, res.zoom, res.row, res.col)
+                const tileSrc = `${getBaseTileUrl}${tileUrl}`;
+                debugMsg.value = `map click at [${x},${y}]\n tileSrc:${tileSrc},\n wms_url:${res.wms_url}`;
+                tileImage.innerHTML = `<img src="${tileSrc}" alt="tile image"/>`;
+                tileInfoUrl.innerHTML = `${tileUrl}`;
+                wmsImage.innerHTML = `<img src="${res.wms_url}" alt="wms image"/>`;
+                wmsInfoUrl.innerHTML = `WMS bbox:${res.bbox}`;
+                drawBBox(myOlMap, myBBoxLayerName, res.bbox);
+            }
+
+        });
+        myOlMap.on("moveend", () => {
+            log.t(`map moveend event`);
+            const newCenter = myOlMap.getView().getCenter() || placeStFrancoisM95;
+            const realZoom = myOlMap.getView().getZoom() || defaultZoom;
+            log.l(`real zoom: ${realZoom}`);
+            const newZoom = Math.round(realZoom);
+            inputX.value = newCenter[0].toFixed(2);
+            inputY.value = newCenter[1].toFixed(2);
+            myOlMap.getView().setZoom(newZoom);
+            inputZoom.value = newZoom.toString();
+            const msg = `map view changed to [${newCenter[0].toFixed(2)},${newCenter[1].toFixed(2)}] zoom:${newZoom}`;
+            log.l(msg);
+            debugMsg.value = msg;
+        });
+    }
 
 } catch (error) {
     log.e(`event [map-error]💥💥 map initialization error: ${error}`);
