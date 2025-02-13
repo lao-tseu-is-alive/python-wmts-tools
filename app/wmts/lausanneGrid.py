@@ -50,7 +50,7 @@ class LausanneGrid(BaseModel):
     def get_tile(self, coord_x: float, coord_y: float, zoom_level: int):
         # Check if zoom level is supported
         if zoom_level not in self.resolutions:
-            raise ValueError("Unsupported zoom level. Please choose between 1 and 4.")
+            raise ValueError(f"Unsupported zoom level : {zoom_level}. Please choose between 0 and {self.max_zoom()}.")
 
         # Get the resolution for the zoom level
         zoom_info = self.resolutions[zoom_level]
@@ -66,6 +66,9 @@ class LausanneGrid(BaseModel):
 
     def max_zoom(self):
         return max(self.resolutions.keys())
+
+    def num_zoom_levels(self):
+        return len(self.resolutions.keys())
 
     def min_zoom(self):
         return min(self.resolutions.keys())
