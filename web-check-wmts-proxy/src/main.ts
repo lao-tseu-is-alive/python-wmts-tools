@@ -23,6 +23,7 @@ const myBBoxLayerName = "GoelandBBoxLayer";
 const defaultBaseLayer: baseLayerType = "fonds_geo_osm_bdcad_couleur";
 const getBaseTileUrl = "https://tilesmn95.lausanne.ch/tiles/1.0.0"
 const getTileUrl = (layer: baseLayerType, z: number, row: number, col: number) => `/${layer}/default/2021/swissgrid_05/${z}/${row}/${col}.png`
+const getWmtsProxyTileUrl = (layer: baseLayerType, z: number, row: number, col: number) => `/tiles/1.0.0/${layer}/${z}/${row}/${col}`
 
 interface tileInfo {
     "zoom": number,
@@ -109,6 +110,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         </div>
         <div class="six columns">
             <div id="wms-image" class="image-wmts u-pull-left"></div>
+            <div id="wms-image-from-wmts-proxy" class="image-wmts u-pull-left"></div>
         </div>
     </div>
 </div>  
@@ -122,6 +124,7 @@ const debugMsg = document.querySelector<HTMLTextAreaElement>('#debugMsg')!;
 const tileImage = document.querySelector<HTMLDivElement>('#tile-image')!;
 const tileInfoUrl = document.querySelector<HTMLDivElement>('#tile-url')!;
 const wmsImage = document.querySelector<HTMLDivElement>('#wms-image')!;
+const wmsImageFromWmtsProxy = document.querySelector<HTMLDivElement>('#wms-image-from-wmts-proxy')!;
 const wmsInfoUrl = document.querySelector<HTMLDivElement>('#wms-url')!;
 
 
@@ -152,6 +155,7 @@ try {
         log.l(`✅ map createLausanneMap returned a valid map`);
         myOlMap.getView().setCenter(placeStFrancoisM95);
         myOlMap.getView().setZoom(defaultZoom);
+        /* draw a bbox
         const imgBBox=[2537000.0,1152000.025,2537999.975,1153000.0];
         const imgBBoxPolygonWithVerticesStyleOptions: PolygonWithVerticesStyleOptions = {
             strokeColor: 'blue',
@@ -171,6 +175,15 @@ try {
             vertexRadius: 3,
         };
         drawBBox(myOlMap, myBBoxLayerName, tileGridBBox as [number, number, number, number], false, tileGridBBoxPolygonWithVerticesStyleOptions);
+
+         */
+        const tileBBoxWithVerticesStyleOptions: PolygonWithVerticesStyleOptions = {
+            strokeColor: 'red',
+            strokeWidth: 2,
+            fillColor: 'rgba(255, 0, 250, 0.1)',
+            vertexFillColor: 'yellow',
+            vertexRadius: 3,
+        };
         myOlMap.on("click", async (evt) => {
             log.t(`map click event`, evt);
             const x = +Number(evt.coordinate[0]).toFixed(2);
@@ -189,12 +202,15 @@ try {
             if (res !== null) {
                 const tileUrl = getTileUrl(baseLayer, res.zoom, res.row, res.col)
                 const tileSrc = `${getBaseTileUrl}${tileUrl}`;
+                const wmtsProxyTileUrl = getWmtsProxyTileUrl(baseLayer, res.zoom, res.row, res.col)
+                const wmtsProxyTileSrc = `${BACKEND_URL}${wmtsProxyTileUrl}`;
                 debugMsg.value = `map click at [${x},${y}]\n tileSrc:${tileSrc},\n wms_url:${res.wms_url}`;
                 tileImage.innerHTML = `<img src="${tileSrc}" alt="tile image"/>`;
                 tileInfoUrl.innerHTML = `${tileUrl}`;
                 wmsImage.innerHTML = `<img src="${res.wms_url}" alt="wms image"/>`;
+                wmsImageFromWmtsProxy.innerHTML = `<img src="${wmtsProxyTileSrc}" alt="wmts-proxy image"/>`;
                 wmsInfoUrl.innerHTML = `WMS bbox:${res.bbox}`;
-                drawBBox(myOlMap, myBBoxLayerName, res.bbox);
+                drawBBox(myOlMap, myBBoxLayerName, res.bbox, true, tileBBoxWithVerticesStyleOptions);
             }
 
         });

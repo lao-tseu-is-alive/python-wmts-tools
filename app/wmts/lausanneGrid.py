@@ -55,8 +55,6 @@ class LausanneGrid(BaseModel):
         # Get the resolution for the zoom level
         zoom_info = self.resolutions[zoom_level]
         resolution = zoom_info['cellSize']
-        #print(f"resolution: {resolution}")
-        #resolution = self.resolutions[zoom_level]
 
         # Calculate the tile indices (x, y)
         tile_col = int((coord_x - self.top_left_x) / (self.tile_size * resolution))
