@@ -20,10 +20,11 @@ const posCenterX = 2538202;
 const posCenterY = 1152364;
 const myPointLayerName = "GoelandPointLayer";
 const myBBoxLayerName = "GoelandBBoxLayer";
-const defaultBaseLayer: baseLayerType = "fonds_geo_osm_bdcad_couleur";
+//const defaultBaseLayer: baseLayerType = "fonds_geo_osm_bdcad_couleur";
+const defaultBaseLayer: baseLayerType = "fonds_geo_osm_bdcad_gris";
 const getBaseTileUrl = "https://tilesmn95.lausanne.ch/tiles/1.0.0"
 const getTileUrl = (layer: baseLayerType, z: number, row: number, col: number) => `/${layer}/default/2021/swissgrid_05/${z}/${row}/${col}.png`
-const getWmtsProxyTileUrl = (layer: baseLayerType, z: number, row: number, col: number) => `/tiles/1.0.0/${layer}/${z}/${row}/${col}`
+const getWmtsProxyTileUrl = (layer: baseLayerType, z: number, row: number, col: number) => `/tiles/1.0.0/${layer}/default/2021/swissgrid_05/${z}/${row}/${col}`
 
 interface tileInfo {
     "zoom": number,
@@ -128,8 +129,8 @@ const wmsImageFromWmtsProxy = document.querySelector<HTMLDivElement>('#wms-image
 const wmsInfoUrl = document.querySelector<HTMLDivElement>('#wms-url')!;
 
 
-const getTileByXY = async (z: number, x: number, y: number): Promise<tileInfo | null> => {
-    const url = `${BACKEND_URL}/getTileByXY/${z}/${x}/${y}`;
+const getTileByXY = async (layer:string, z: number, x: number, y: number): Promise<tileInfo | null> => {
+    const url = `${BACKEND_URL}/getTileByXY/${layer}/${z}/${x}/${y}`;
     log.l(`getTileByXY url:${url}`);
     try {
         const response = await axios.get(url, {timeout: defaultAxiosTimeout});
@@ -197,7 +198,7 @@ try {
             const currentZoom = Number(inputZoom.value)
             const baseLayer = inputBaseLayer.value as baseLayerType;
             redrawMarker(myOlMap, myPointLayerName, [x, y]);
-            const res = await getTileByXY(currentZoom, x, y);
+            const res = await getTileByXY(defaultBaseLayer, currentZoom, x, y);
             log.l(`getTileByXY response:`, res);
             if (res !== null) {
                 const tileUrl = getTileUrl(baseLayer, res.zoom, res.row, res.col)
